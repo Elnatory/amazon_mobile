@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "947539259472",
+    "project_id": "fir-88026",
+    "storage_bucket": "fir-88026.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:947539259472:android:d38b6c5331eebef0e92155",
+        "android_client_info": {
+          "package_name": "com.example.amazon_mobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCnz81wETq-KJMGUZnXbjRwwQnch8V8A7w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
