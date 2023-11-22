@@ -38,7 +38,6 @@ class _ScreenLayoutState extends State<ScreenLayout> {
     // Provider.of<UserDetailsProvider>(context).getData();
     return DefaultTabController(
       length: 4,
-      child: SafeArea(
         child: Scaffold(
           body: PageView(
             physics: const NeverScrollableScrollPhysics(),
@@ -88,7 +87,7 @@ class _ScreenLayoutState extends State<ScreenLayout> {
             ),
           ),
         ),
-      ),
+    
     );
   }
 }

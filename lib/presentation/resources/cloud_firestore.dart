@@ -1,3 +1,4 @@
+import 'package:amazon_mobile/domain/model/category.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
@@ -45,6 +46,22 @@ class CloudFirestoreClass {
         "name": '',
         "email": '',
       };
+    }
+  }
+
+  Future<List<Category>> getCategories() async {
+    try {
+      QuerySnapshot<Map<String, dynamic>> categoriesSnapshot =
+          await firebaseFirestore.collection("categories").get();
+
+      List<Category> categoriesList = categoriesSnapshot.docs
+          .map((doc) => Category.fromMap(doc.data() as Map<String, dynamic>))
+          .toList();
+
+      return categoriesList;
+    } catch (e) {
+      print("Error fetching categories: $e");
+      return [];
     }
   }
 

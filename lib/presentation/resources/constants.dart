@@ -4,10 +4,12 @@ import 'package:amazon_mobile/presentation/screens/main_view/home_screen.dart';
 import 'package:amazon_mobile/presentation/screens/more_view/more.dart';
 import 'package:flutter/material.dart';
 
+const double kAppBarHeight = 80;
+
 const String amazonLogo =
     "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/2560px-Amazon_logo.svg.png";
 
-const List<Widget> screens = [
+final List<Widget> screens = [
   Home(),
   Account(),
   Cart(),

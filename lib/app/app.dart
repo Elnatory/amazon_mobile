@@ -34,12 +34,12 @@ class _MyAppState extends State<MyApp> {
         backgroundColor: ColorManager.text,
         body: ScreenLayout() 
       ),
-      theme: getThemData(),
+      // theme: getThemData(),
       // theme: ThemeData(
       //   colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
       //   useMaterial3: true,
       // ),
-      // theme: ThemeData.light().copyWith( scaffoldBackgroundColor: ColorManager.text),
+      theme: ThemeData.light().copyWith( scaffoldBackgroundColor: Colors.transparent),
     );
   }
 }

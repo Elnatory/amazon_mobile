@@ -129,7 +129,7 @@ class _LoginState extends State<Login> {
                                 if (auth.currentUser!.uid != null) {
                                   Navigator.pushReplacement(context,
                                       MaterialPageRoute(builder: (context) {
-                                    return const Home();
+                                    return Home();
                                   }));
                                   box.write('uid', auth.currentUser!.uid);
                                   Get.snackbar(
@@ -181,7 +181,7 @@ class _LoginState extends State<Login> {
                                   if (auth.currentUser != null) {
                                     Navigator.pushReplacement(context,
                                         MaterialPageRoute(builder: (context) {
-                                      return const Home();
+                                      return  Home();
                                     }));
                                     box.write('uid', auth.currentUser!.uid);
 

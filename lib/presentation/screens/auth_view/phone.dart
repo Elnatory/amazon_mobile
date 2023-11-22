@@ -152,7 +152,7 @@ class _EnterCodeScreenState extends State<EnterCodeScreen> {
       );
 
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
-        return const Home();
+        return Home();
       }));
       // Get.off(() => MainNav());
     } catch (e) {
