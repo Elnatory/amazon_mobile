@@ -1,7 +1,8 @@
 import 'package:amazon_mobile/presentation/screens/main_view/main.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:get/route_manager.dart';
+import 'package:get/route_manager.dart';
+import 'package:get/get.dart';
 
 class PhoneNumberForm extends StatefulWidget {
   @override
@@ -130,27 +131,27 @@ class _EnterCodeScreenState extends State<EnterCodeScreen> {
 
       print('Verification successful');
 
-      // Get.snackbar(
-      //   'Welcome',
-      //   'Muhammad_Omar',
-      //   titleText: const Text(
-      //     'Welcome',
-      //     style: TextStyle(
-      //       fontSize: 20,
-      //       fontWeight: FontWeight.bold,
-      //       color: Colors.white,
-      //     ),
-      //   ),
-      //   messageText: const Text(
-      //     'Muhammad_Omar',
-      //     style: TextStyle(
-      //       fontSize: 18,
-      //       color: Colors.black,
-      //     ),
-      //   ),
-      // );
-      Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (context) {
+      Get.snackbar(
+        'Welcome',
+        'Muhammad Omar',
+        titleText: const Text(
+          'Welcome',
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+        messageText: const Text(
+          'Muhammad Omar',
+          style: TextStyle(
+            fontSize: 18,
+            color: Colors.black,
+          ),
+        ),
+      );
+
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
         return const Main();
       }));
       // Get.off(() => MainNav());

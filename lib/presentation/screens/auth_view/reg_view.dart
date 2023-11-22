@@ -6,6 +6,8 @@ import 'package:amazon_mobile/presentation/resources/utils.dart';
 import 'package:amazon_mobile/presentation/screens/auth_view/login_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
+import 'package:get/get.dart';
 
 class Registeration extends StatefulWidget {
   const Registeration({super.key});
@@ -20,7 +22,6 @@ class _RegisterationState extends State<Registeration> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   var Muhammad_Omar = GlobalKey<FormState>();
-  // AuthenticationMethods authenticationMethods = AuthenticationMethods();
   bool isLoading = false;
   @override
   Widget build(BuildContext context) {
@@ -104,28 +105,25 @@ class _RegisterationState extends State<Registeration> {
                                     return const Login();
                                   }));
                                   // Get.to(Login());
-                                  // Get.snackbar(
-                                  //     'Welcome',
-                                  //     'Muhammad_Omar',
-                                  //     titleText: const Text(
-                                  //       'Registeration Success',
-                                  //       style: TextStyle(
-                                  //         fontSize: 20,
-                                  //         fontWeight: FontWeight
-                                  //             .bold,
-                                  //         color: Colors
-                                  //             .white,
-                                  //       ),
-                                  //     ),
-                                  //     messageText: const Text(
-                                  //       'Please, Check Your Email',
-                                  //       style: TextStyle(
-                                  //         fontSize: 18,
-                                  //         color: Colors
-                                  //             .black,
-                                  //       ),
-                                  //     ),
-                                  //   );
+                                  Get.snackbar(
+                                    'Welcome',
+                                    'Muhammad Omar',
+                                    titleText: const Text(
+                                      'Welcome',
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    messageText: const Text(
+                                      'Muhammad Omar',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  );
                                 } on FirebaseAuthException catch (e) {
                                   if (e.code == 'weak-password') {
                                     print('The password provided is too weak.');

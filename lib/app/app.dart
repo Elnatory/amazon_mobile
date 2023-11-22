@@ -3,6 +3,8 @@ import 'package:amazon_mobile/presentation/resources/theme_manager.dart';
 import 'package:amazon_mobile/presentation/screens/auth_view/login_view.dart';
 import 'package:amazon_mobile/presentation/screens/auth_view/reg_view.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:flutter/services.dart';
 
 class MyApp extends StatefulWidget {
   // defult constractor (unNamed Constractor / special constractor) :
@@ -21,9 +23,16 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.light,
+    ));
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Registeration(),
+      home:  const Scaffold(
+        backgroundColor: ColorManager.text,
+        body: Login(), 
+      ),
       theme: getThemData(),
       // theme: ThemeData(
       //   colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),

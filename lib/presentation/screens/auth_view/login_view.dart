@@ -8,6 +8,9 @@ import 'package:amazon_mobile/presentation/screens/main_view/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:amazon_mobile/presentation/screens/auth_view/reg_view.dart';
+import 'package:get/route_manager.dart';
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class Login extends StatefulWidget {
@@ -19,12 +22,11 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   var auth = FirebaseAuth.instance;
-  // final box = GetStorage();
+  final box = GetStorage();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
   var Muhammad_Omar = GlobalKey<FormState>();
-  // AuthenticationMethods authenticationMethods = AuthenticationMethods();
   bool isLoading = false;
   Future<UserCredential> signInWithGoogle() async {
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
@@ -129,26 +131,27 @@ class _LoginState extends State<Login> {
                                       MaterialPageRoute(builder: (context) {
                                     return const Main();
                                   }));
-                                  // box.write('uid', auth.currentUser!.uid);
-                                  // Get.snackbar(
-                                  //   'Welcome',
-                                  //   'Muhammad Omar',
-                                  //   titleText: const Text(
-                                  //     'Welcome',
-                                  //     style: TextStyle(
-                                  //       fontSize: 20,
-                                  //       fontWeight: FontWeight.bold,
-                                  //       color: Colors.white,
-                                  //     ),
-                                  //   ),
-                                  //   messageText: const Text(
-                                  //     'Muhammad Omar',
-                                  //     style: TextStyle(
-                                  //       fontSize: 18,
-                                  //       color: Colors.black,
-                                  //     ),
-                                  //   ),
-                                  // );
+                                  box.write('uid', auth.currentUser!.uid);
+                                  Get.snackbar(
+                                    'Welcome',
+                                    'Muhammad Omar',
+                                    titleText: const Text(
+                                      'Welcome',
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    messageText: const Text(
+                                      'Muhammad Omar',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  );
+
                                   // Get.to(MainNav());
                                   print(auth.currentUser!.uid);
                                 }
@@ -180,29 +183,29 @@ class _LoginState extends State<Login> {
                                         MaterialPageRoute(builder: (context) {
                                       return const Main();
                                     }));
-                                    // box.write('uid', auth.currentUser!.uid);
+                                    box.write('uid', auth.currentUser!.uid);
 
-                                    // Get.snackbar(
-                                    //   'Welcome',
-                                    //   'Muhammad Omar',
-                                    //   titleText: const Text(
-                                    //     'Welcome',
-                                    //     style: TextStyle(
-                                    //       fontSize: 20,
-                                    //       fontWeight: FontWeight.bold,
-                                    //       color: Colors.white,
-                                    //     ),
-                                    //   ),
-                                    //   messageText: const Text(
-                                    //     'Muhammad Omar',
-                                    //     style: TextStyle(
-                                    //       fontSize: 18,
-                                    //       color: Colors.black,
-                                    //     ),
-                                    //   ),
-                                    // );
+                                    Get.snackbar(
+                                      'Welcome',
+                                      'Muhammad Omar',
+                                      titleText: const Text(
+                                        'Welcome',
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      messageText: const Text(
+                                        'Muhammad Omar',
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    );
 
-                                    // Get.to(const MainNav());
+                                    // Get.to(const Main());
                                     print(auth.currentUser!.uid);
                                   }
                                 } catch (e) {
