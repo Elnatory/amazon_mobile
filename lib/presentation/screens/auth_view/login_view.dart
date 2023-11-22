@@ -4,7 +4,7 @@ import 'package:amazon_mobile/presentation/widgets/text_field_widget.dart';
 import 'package:amazon_mobile/presentation/resources/color_manager.dart';
 import 'package:amazon_mobile/presentation/resources/constants.dart';
 import 'package:amazon_mobile/presentation/resources/utils.dart';
-import 'package:amazon_mobile/presentation/screens/main_view/main.dart';
+import 'package:amazon_mobile/presentation/screens/main_view/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:amazon_mobile/presentation/screens/auth_view/reg_view.dart';
@@ -129,7 +129,7 @@ class _LoginState extends State<Login> {
                                 if (auth.currentUser!.uid != null) {
                                   Navigator.pushReplacement(context,
                                       MaterialPageRoute(builder: (context) {
-                                    return const Main();
+                                    return const Home();
                                   }));
                                   box.write('uid', auth.currentUser!.uid);
                                   Get.snackbar(
@@ -181,7 +181,7 @@ class _LoginState extends State<Login> {
                                   if (auth.currentUser != null) {
                                     Navigator.pushReplacement(context,
                                         MaterialPageRoute(builder: (context) {
-                                      return const Main();
+                                      return const Home();
                                     }));
                                     box.write('uid', auth.currentUser!.uid);
 
@@ -205,7 +205,7 @@ class _LoginState extends State<Login> {
                                       ),
                                     );
 
-                                    // Get.to(const Main());
+                                    // Get.to(const Home());
                                     print(auth.currentUser!.uid);
                                   }
                                 } catch (e) {

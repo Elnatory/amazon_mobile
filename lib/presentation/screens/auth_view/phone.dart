@@ -1,4 +1,4 @@
-import 'package:amazon_mobile/presentation/screens/main_view/main.dart';
+import 'package:amazon_mobile/presentation/screens/main_view/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/route_manager.dart';
@@ -152,7 +152,7 @@ class _EnterCodeScreenState extends State<EnterCodeScreen> {
       );
 
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
-        return const Main();
+        return const Home();
       }));
       // Get.off(() => MainNav());
     } catch (e) {

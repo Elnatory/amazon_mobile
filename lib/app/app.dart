@@ -1,3 +1,4 @@
+import 'package:amazon_mobile/presentation/layout/screen_layout.dart';
 import 'package:amazon_mobile/presentation/resources/color_manager.dart';
 import 'package:amazon_mobile/presentation/resources/theme_manager.dart';
 import 'package:amazon_mobile/presentation/screens/auth_view/login_view.dart';
@@ -31,7 +32,7 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       home:  const Scaffold(
         backgroundColor: ColorManager.text,
-        body: Login(), 
+        body: ScreenLayout() 
       ),
       theme: getThemData(),
       // theme: ThemeData(
