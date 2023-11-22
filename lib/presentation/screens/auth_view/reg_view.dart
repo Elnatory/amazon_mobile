@@ -1,3 +1,4 @@
+import 'package:amazon_mobile/presentation/resources/cloud_firestore.dart';
 import 'package:amazon_mobile/presentation/widgets/main_button.dart';
 import 'package:amazon_mobile/presentation/widgets/text_field_widget.dart';
 import 'package:amazon_mobile/presentation/resources/color_manager.dart';
@@ -12,11 +13,13 @@ import 'package:get/get.dart';
 class Registeration extends StatefulWidget {
   const Registeration({super.key});
 
+
   @override
   State<Registeration> createState() => _RegisterationState();
 }
 
 class _RegisterationState extends State<Registeration> {
+  CloudFirestoreClass cloudFirestoreClass = CloudFirestoreClass();
   var auth = FirebaseAuth.instance;
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
@@ -100,16 +103,21 @@ class _RegisterationState extends State<Registeration> {
                                           email: emailController.text,
                                           password: passwordController.text);
                                   print("reg success");
+                                  await CloudFirestoreClass()
+                                      .uploadNameAndEmailToDatabase(
+                                    name: nameController.text,
+                                    email: emailController.text,
+                                  );
                                   Navigator.pushReplacement(context,
                                       MaterialPageRoute(builder: (context) {
                                     return const Login();
                                   }));
                                   // Get.to(Login());
                                   Get.snackbar(
-                                    'Welcome',
-                                    'Muhammad Omar',
+                                    'You have registered',
+                                    'Successfully',
                                     titleText: const Text(
-                                      'Welcome',
+                                      'You have registered',
                                       style: TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold,
@@ -117,7 +125,7 @@ class _RegisterationState extends State<Registeration> {
                                       ),
                                     ),
                                     messageText: const Text(
-                                      'Muhammad Omar',
+                                      'You have registered',
                                       style: TextStyle(
                                         fontSize: 18,
                                         color: Colors.black,
