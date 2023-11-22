@@ -5,7 +5,7 @@ ThemeData getThemData() {
   return ThemeData(
     primaryColor: ColorManager.primary,
     appBarTheme: const AppBarTheme(
-      backgroundColor: ColorManager.sub,
+      backgroundColor: ColorManager.backgroundColor,
       elevation: 0.0,
     ),
     textTheme: const TextTheme(
