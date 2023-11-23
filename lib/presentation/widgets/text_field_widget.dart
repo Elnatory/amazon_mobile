@@ -10,7 +10,7 @@ class TextFieldWidget extends StatefulWidget {
     required this.title,
     required this.controller,
     required this.obscureText,
-    required this.hintText,
+    required this.hintText, required String? Function(dynamic value) validator,
   }) : super(key: key);
 
   @override

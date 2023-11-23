@@ -21,6 +21,53 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final _formKey = GlobalKey<FormState>();
+
+  Future<void> _loginWithEmailAndPassword() async {
+    if (_formKey.currentState!.validate()) {
+      try {
+        final UserCredential userCredential =
+            await _auth.signInWithEmailAndPassword(
+          email: _emailController.text.trim(),
+          password: _passwordController.text,
+        );
+
+        // If login successful, navigate to the MessengerScreen
+        if (userCredential.user != null) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const Registeration(),
+            ),
+          );
+        }
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'user-not-found' || e.code == 'wrong-password') {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Invalid email or password'),
+            ),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('An error occurred. Please try again later.'),
+            ),
+          );
+        }
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('An error occurred. Please try again later.'),
+          ),
+        );
+      }
+    }
+  }
+
   var auth = FirebaseAuth.instance;
   final box = GetStorage();
   TextEditingController emailController = TextEditingController();
@@ -97,16 +144,41 @@ class _LoginState extends State<Login> {
                               fontWeight: FontWeight.w500, fontSize: 33),
                         ),
                         TextFieldWidget(
-                          title: "Email",
-                          controller: emailController,
-                          obscureText: false,
-                          hintText: "Enter your email",
-                        ),
+                            title: "Email",
+                            controller: emailController,
+                            obscureText: false,
+                            hintText: "Enter your email",
+                            validator: (value) {
+                              bool emailValid =
+                                  RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                                      .hasMatch(value);
+
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter an email';
+                              } else if (!emailValid) {
+                                return "enter a valid email";
+                              }
+                              return null;
+                            }
+                            ),
+
                         TextFieldWidget(
                           title: "Password",
                           controller: passwordController,
                           obscureText: true,
                           hintText: "Enter your password",
+                          
+                          validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter a password ';
+                                }
+                                else if (value.length<6) {
+                                  return 'Please enter minimum 6 characters';
+
+                                }
+                                return null;
+                              }
+
                         ),
                         // =========================Start SignIn with Email and Password=================
                         Align(
