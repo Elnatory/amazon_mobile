@@ -6,6 +6,7 @@ import 'package:amazon_mobile/presentation/widgets/banner.dart';
 import 'package:amazon_mobile/presentation/widgets/categories_list.dart';
 import 'package:amazon_mobile/presentation/widgets/product_widget.dart';
 import 'package:amazon_mobile/presentation/widgets/products_listview.dart';
+import 'package:amazon_mobile/presentation/widgets/user_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -53,6 +54,9 @@ class _HomeState extends State<Home> {
       body: ListView(
         controller: controller,
         children: [
+           UserDetailsBar(
+                  offset: offset,
+                ),
           CategoriesList(),
           AdBannerWidget(),
           FutureBuilder<List<Product>>(
