@@ -1,7 +1,9 @@
-import 'package:amazon_mobile/domain/model/category.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
+
+import 'package:amazon_mobile/domain/model/category.dart' show Category;
+import 'package:amazon_mobile/domain/model/products.dart' show Product;
 
 class CloudFirestoreClass {
   FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
@@ -65,5 +67,20 @@ class CloudFirestoreClass {
     }
   }
 
+Future<List<Product>> getProducts() async {
+    try {
+        QuerySnapshot<Map<String, dynamic>> snapshot =
+            await firebaseFirestore.collection('extras').get();
+
+        List<Product> products = snapshot.docs
+            .map((doc) => Product.fromJson(doc.data() as Map<String, dynamic>))
+            .toList();
+
+        return products;
+    } catch (e) {
+        print("Error fetching products: $e");
+        return [];
+    }
+}
 
 }
