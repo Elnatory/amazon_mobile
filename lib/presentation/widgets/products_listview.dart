@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 class ProductsShowcaseListView extends StatelessWidget {
   final String title;
   final List<Product> products;
-  
 
   const ProductsShowcaseListView({
     Key? key,

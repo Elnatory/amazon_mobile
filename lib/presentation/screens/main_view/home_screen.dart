@@ -22,6 +22,7 @@ class _HomeState extends State<Home> {
   CloudFirestoreClass getCloudFirestore() {
     return cloudFirestore;
   }
+
   ScrollController controller = ScrollController();
   double offset = 0;
 
@@ -49,41 +50,35 @@ class _HomeState extends State<Home> {
         isReadOnly: true,
         hasBackButton: false,
       ),
-      body: SingleChildScrollView(
+      body: ListView(
         controller: controller,
-        child: Column(
-          children: [
-            CategoriesList(),
-            AdBannerWidget(),
-            FutureBuilder<List<Product>>(
-        future: getCloudFirestore().getProducts(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator();
-          } else if (snapshot.hasError) {
-            return Text('Error: ${snapshot.error}');
-          } else {
-            List<Product> products = snapshot.data!;
-            List<Widget> productWidgets = products.map((product) {
-              return ProductWidget(product: product);
-            }).toList();
+        children: [
+          CategoriesList(),
+          AdBannerWidget(),
+          FutureBuilder<List<Product>>(
+            future: getCloudFirestore().getProducts(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return CircularProgressIndicator();
+              } else if (snapshot.hasError) {
+                return Text('Error: ${snapshot.error}');
+              } else {
+                List<Product> products = snapshot.data!;
+                List<Widget> productWidgets = products.map((product) {
+                  return ProductWidget(product: product);
+                }).toList();
 
-            return ProductsShowcaseListView(
-              title: 'Shop by Products',
-              products: products,
-            );
-          }
-        },
-      ),
-            // ProductsShowcaseListView(
-            //     title: "Upto 70% Off"),
-            // ProductsShowcaseListView(
-            //     title: "Upto 60% Off", children: discount60!),
-            // ProductsShowcaseListView(
-            //     title: "Upto 50% Off", children: discount50!),
-            // ProductsShowcaseListView(title: "Explore", children: discount0!),
-          ],
-        ),
+                return Transform.translate(
+                  offset: Offset(0, -40),
+                  child: ProductsShowcaseListView(
+                    title: 'Shop by Products',
+                    products: products,
+                  ),
+                );
+              }
+            },
+          ),
+        ],
       ),
     );
   }
