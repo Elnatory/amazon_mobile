@@ -1,3 +1,4 @@
+import 'package:amazon_mobile/presentation/layout/screen_layout.dart';
 import 'package:amazon_mobile/presentation/screens/auth_view/phone.dart';
 import 'package:amazon_mobile/presentation/widgets/main_button.dart';
 import 'package:amazon_mobile/presentation/widgets/text_field_widget.dart';
@@ -129,7 +130,7 @@ class _LoginState extends State<Login> {
                                 if (auth.currentUser!.uid != null) {
                                   Navigator.pushReplacement(context,
                                       MaterialPageRoute(builder: (context) {
-                                    return Home();
+                                    return ScreenLayout();
                                   }));
                                   box.write('uid', auth.currentUser!.uid);
                                   Get.snackbar(
@@ -181,7 +182,7 @@ class _LoginState extends State<Login> {
                                   if (auth.currentUser != null) {
                                     Navigator.pushReplacement(context,
                                         MaterialPageRoute(builder: (context) {
-                                      return  Home();
+                                      return  ScreenLayout();
                                     }));
                                     box.write('uid', auth.currentUser!.uid);
 

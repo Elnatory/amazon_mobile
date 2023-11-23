@@ -15,7 +15,6 @@ class Category {
     required this.updatedAt,
   });
 
-  // Factory method to create a Category instance from a Map
   factory Category.fromMap(Map<String, dynamic> map) {
     return Category(
       id: map['_id'],

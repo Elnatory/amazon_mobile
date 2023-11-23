@@ -1,3 +1,5 @@
+import 'package:amazon_mobile/presentation/layout/screen_layout.dart';
+import 'package:amazon_mobile/presentation/resources/color_manager.dart';
 import 'package:amazon_mobile/presentation/screens/main_view/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -16,8 +18,11 @@ class _PhoneNumberFormState extends State<PhoneNumberForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ColorManager.text,
       appBar: AppBar(
-        title: Text('Phone Number Verification'),
+        title: Text('Phone Number Verification',
+            style: TextStyle(color: Colors.amber)),
+        backgroundColor: ColorManager.primary,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -36,7 +41,13 @@ class _PhoneNumberFormState extends State<PhoneNumberForm> {
                 String phoneNumber = '+${phoneNumberController.text.trim()}';
                 phone(phoneNumber);
               },
-              child: Text('Verify Phone Number'),
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(Colors.amber),
+              ),
+              child: Text(
+                'Verify Phone Number',
+                style: TextStyle(color: ColorManager.text),
+              ),
             ),
           ],
         ),
@@ -92,8 +103,10 @@ class _EnterCodeScreenState extends State<EnterCodeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ColorManager.text,
       appBar: AppBar(
-        title: Text('Enter Verification Code'),
+        title: Text('Enter Verification Code', style: TextStyle(color: Colors.amber),),
+        backgroundColor: ColorManager.primary,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -114,6 +127,9 @@ class _EnterCodeScreenState extends State<EnterCodeScreen> {
                 verifyCode(verificationCode);
               },
               child: Text('Verify Code'),
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(Colors.amber),
+              )
             ),
           ],
         ),
@@ -146,13 +162,13 @@ class _EnterCodeScreenState extends State<EnterCodeScreen> {
           'Muhammad Omar',
           style: TextStyle(
             fontSize: 18,
-            color: Colors.black,
+            color: Colors.white,
           ),
         ),
       );
 
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
-        return Home();
+        return ScreenLayout();
       }));
       // Get.off(() => MainNav());
     } catch (e) {

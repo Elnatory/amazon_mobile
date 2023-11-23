@@ -12,7 +12,7 @@ class SearchBarWidget extends StatelessWidget implements PreferredSizeWidget {
     Key? key,
     required this.isReadOnly,
     required this.hasBackButton,
-  })  : preferredSize = const Size.fromHeight(kAppBarHeight),
+  })  : preferredSize = const Size.fromHeight(AppBarHeight),
         super(key: key);
 
   @override
