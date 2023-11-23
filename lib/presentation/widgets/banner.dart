@@ -44,7 +44,7 @@ class _AdBannerWidgetState extends State<AdBannerWidget> {
               bottom: 0,
               child: Container(
                 width: screenSize.width,
-                height: screenSize.height / 8,
+                height: screenSize.height / 7,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
@@ -90,41 +90,44 @@ class _AdBannerWidgetState extends State<AdBannerWidget> {
   }
 
   Widget getSmallAdWidget({required int index, required double side}) {
-    return Container(
-        height: side,
-        width: side,
-        decoration: ShapeDecoration(
-          color: Colors.white,
-          shadows: [
-            BoxShadow(
-                color: Colors.black.withOpacity(0.3),
-                spreadRadius: 1,
-                blurRadius: 8),
-          ],
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: FittedBox(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Image.network(
-                  smallAds[index],
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: Text(
-                    adItemNames[index],
-                    style: const TextStyle(
-                        fontSize: 13, fontWeight: FontWeight.w500),
-                  ),
-                )
-              ],
+    return Transform.translate(
+      offset: const Offset(0, -50),
+      child: Container(
+          height: side,
+          width: side,
+          decoration: ShapeDecoration(
+            color: Colors.white,
+            shadows: [
+              BoxShadow(
+                  color: Colors.black.withOpacity(0.3),
+                  spreadRadius: 1,
+                  blurRadius: 8),
+            ],
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
             ),
           ),
-        ));
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: FittedBox(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Image.network(
+                    smallAds[index],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Text(
+                      adItemNames[index],
+                      style: const TextStyle(
+                          fontSize: 15, fontWeight: FontWeight.w500),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          )),
+    );
   }
 }

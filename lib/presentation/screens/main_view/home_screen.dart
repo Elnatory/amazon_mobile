@@ -1,4 +1,5 @@
 import 'package:amazon_mobile/presentation/layout/search_layout.dart';
+import 'package:amazon_mobile/presentation/resources/color_manager.dart';
 import 'package:amazon_mobile/presentation/widgets/banner.dart';
 import 'package:amazon_mobile/presentation/widgets/categories_list.dart';
 import 'package:flutter/material.dart';
@@ -34,6 +35,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ColorManager.backgroundColor,
       appBar: SearchBarWidget(
         isReadOnly: true,
         hasBackButton: false,
