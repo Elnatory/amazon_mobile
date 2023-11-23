@@ -1,4 +1,5 @@
 import 'package:amazon_mobile/presentation/layout/search_layout.dart';
+import 'package:amazon_mobile/presentation/widgets/banner.dart';
 import 'package:amazon_mobile/presentation/widgets/categories_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -41,7 +42,8 @@ class _HomeState extends State<Home> {
         controller: controller,
         child: Column(
           children: [
-            CategoriesList()
+            CategoriesList(),
+            AdBannerWidget(),
           ],
         ),
       ),

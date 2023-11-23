@@ -43,11 +43,14 @@ const List<String> categoryLogos2 = [
 ];
 
 const List<String> largeAds = [
+  "https://m.media-amazon.com/images/I/71c2lK80oeL._SX3000_.jpg",
+  "https://m.media-amazon.com/images/I/61aU1bpcm7L._SX3000_.jpg",
   "https://m.media-amazon.com/images/I/51QISbJp5-L._SX3000_.jpg",
   "https://m.media-amazon.com/images/I/61jmYNrfVoL._SX3000_.jpg",
+  "https://m.media-amazon.com/images/I/711amgYyx3L._SX3000_.jpg",
   "https://m.media-amazon.com/images/I/612a5cTzBiL._SX3000_.jpg",
   "https://m.media-amazon.com/images/I/61fiSvze0eL._SX3000_.jpg",
-  "https://m.media-amazon.com/images/I/61PzxXMH-0L._SX3000_.jpg",
+  // "https://m.media-amazon.com/images/I/61PzxXMH-0L._SX3000_.jpg",
 ];
 
 const List<String> smallAds = [
