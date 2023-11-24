@@ -12,7 +12,7 @@ import 'package:flutter/services.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
-  
+
   set query(String query) {}
 
   @override
@@ -60,9 +60,9 @@ class _HomeState extends State<Home> {
       body: ListView(
         controller: controller,
         children: [
-           UserDetailsBar(
-                  offset: offset,
-                ),
+          UserDetailsBar(
+            offset: offset,
+          ),
           CategoriesList(),
           AdBannerWidget(),
           FutureBuilder<List<Product>>(
