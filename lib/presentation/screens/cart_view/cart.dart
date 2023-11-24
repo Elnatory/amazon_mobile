@@ -1,5 +1,7 @@
 import 'package:amazon_mobile/presentation/layout/search_layout.dart';
 import 'package:amazon_mobile/presentation/resources/color_manager.dart';
+import 'package:amazon_mobile/presentation/screens/cart_view/cart_product_box.dart';
+import 'package:amazon_mobile/presentation/screens/cart_view/cart_subtotal.dart';
 import 'package:amazon_mobile/presentation/widgets/user_details.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +34,6 @@ class _CartState extends State<Cart> {
   }
 
   @override
-  // AppProvider appProvider = Provider of <AppProvider>(context);
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: SearchBarWidget(
@@ -60,15 +61,12 @@ class _CartState extends State<Cart> {
             ),
             Container(
               width: double.infinity,
-              height: MediaQuery.of(context).size.height * 0.6,
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'Subtotal EGP prdPrice',
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
+                    SizedBox(
+                      height: 30,
+                      child: Subtotal()),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
@@ -85,7 +83,7 @@ class _CartState extends State<Cart> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Your order is eligible for free delivery',
+                                  'Your order qualifies for free delivery',
                                   style: TextStyle(
                                       color: Colors.teal[900],
                                       fontSize: 18,
@@ -143,7 +141,44 @@ class _CartState extends State<Cart> {
                     )
                   ]),
             ),
+            CartProductBox(),
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+              child: Row(children: [
+                Container(
+                  width: 260,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Returns are easy',style: TextStyle(fontSize: 18,fontWeight: FontWeight.w600),),
+                        SizedBox(height: 5,),
+                        Text('Return items within 30 days of delivery'),
+                      ],
+                    ),
+                  ),
+                ),
+                Container(
+                  width: 100,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Image(
+                        height: 50,
+                        width: 50,
+                        image: NetworkImage('https://picsum.photos/200/300')),
+                    ],
+                  ),
+                ),
+              ]),
+            )
           ],
-        ));
+        )
+        );
   }
 }

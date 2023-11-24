@@ -3,15 +3,18 @@ import 'package:amazon_mobile/presentation/resources/constants.dart';
 import 'package:amazon_mobile/presentation/resources/utils.dart';
 import 'package:amazon_mobile/presentation/screens/search_view.dart';
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
 
 class SearchBarWidget2 extends StatelessWidget implements PreferredSizeWidget {
   final bool isReadOnly;
   final bool hasBackButton;
+  final String query;
+  final ValueChanged<String> onChanged;
 
   SearchBarWidget2({
     Key? key,
     required this.isReadOnly,
-    required this.hasBackButton,
+    required this.hasBackButton, required this.query, required this.onChanged,
   })  : preferredSize = const Size.fromHeight(AppBarHeight),
         super(key: key);
 
@@ -63,23 +66,12 @@ class SearchBarWidget2 extends StatelessWidget implements PreferredSizeWidget {
                 ],
               ),
               child: TextField(
-                onSubmitted: (String query) {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) => ResultsScreen(query: query),
-                  //   ),
-                  // );
-                },
+                onChanged: onChanged,
                 readOnly: isReadOnly,
-                // onTap: () {
-                //   if (isReadOnly) {
-                //     Navigator.push(
-                //         context,
-                //         MaterialPageRoute(
-                //             builder: (context) => const SearchScreen()));
-                //   }
-                // },
+                onTap: () {
+                  Get.to(() => SearchScreen(query: query,));
+                
+                },
                 decoration: InputDecoration(
                   contentPadding: const EdgeInsets.all(10),
                   hintText: "Search Amazon.eg ",

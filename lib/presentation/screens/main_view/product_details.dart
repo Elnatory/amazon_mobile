@@ -14,6 +14,7 @@ class ProductDetails extends StatefulWidget {
 
   const ProductDetails({Key? key, required this.singleProduct})
       : super(key: key);
+      set query(String query) {}
 
   @override
   State<ProductDetails> createState() => _ProductDetailsState();
@@ -42,7 +43,11 @@ class _ProductDetailsState extends State<ProductDetails> {
     return Scaffold(
       backgroundColor: ColorManager.text,
       appBar: SearchBarWidget2(
-        isReadOnly: true,
+        onChanged: (value) => setState(() {
+          widget.query = value;
+        }),
+        query: '',
+        isReadOnly: false,
         hasBackButton: true,
       ),
       body: SingleChildScrollView(
