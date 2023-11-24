@@ -29,7 +29,7 @@ class ProductsShowcaseListView extends StatelessWidget {
       padding: const EdgeInsets.all(8),
       height: height,
       width: screenSize.width,
-      color: ColorManager.backgroundColor,
+      color: Colors.transparent,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,

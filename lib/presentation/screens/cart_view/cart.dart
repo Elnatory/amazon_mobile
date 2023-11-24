@@ -32,6 +32,7 @@ class _CartState extends State<Cart> {
   }
 
   @override
+  // AppProvider appProvider = Provider of <AppProvider>(context);
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: SearchBarWidget(
