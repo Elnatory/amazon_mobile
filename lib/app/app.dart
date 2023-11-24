@@ -32,14 +32,14 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       home:  const Scaffold(
         backgroundColor: ColorManager.text,
-        body: ScreenLayout() 
+        body: ScreenLayout()
       ),
-      theme: getThemData(),
+      // theme: getThemData(),
       // theme: ThemeData(
       //   colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
       //   useMaterial3: true,
       // ),
-      // theme: ThemeData.light().copyWith( scaffoldBackgroundColor: ColorManager.text),
+      theme: ThemeData.light().copyWith( scaffoldBackgroundColor: Colors.transparent),
     );
   }
 }
