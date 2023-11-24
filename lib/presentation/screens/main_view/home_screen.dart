@@ -12,6 +12,8 @@ import 'package:flutter/services.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
+  
+  set query(String query) {}
 
   @override
   State<Home> createState() => _HomeState();
@@ -48,7 +50,11 @@ class _HomeState extends State<Home> {
     return Scaffold(
       backgroundColor: ColorManager.backgroundColor,
       appBar: SearchBarWidget(
-        isReadOnly: true,
+        onChanged: (value) => setState(() {
+          widget.query = value;
+        }),
+        query: '',
+        isReadOnly: false,
         hasBackButton: false,
       ),
       body: ListView(

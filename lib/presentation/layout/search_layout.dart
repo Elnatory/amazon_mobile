@@ -3,15 +3,19 @@ import 'package:amazon_mobile/presentation/resources/constants.dart';
 import 'package:amazon_mobile/presentation/resources/utils.dart';
 import 'package:amazon_mobile/presentation/screens/search_view.dart';
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
 
 class SearchBarWidget extends StatelessWidget implements PreferredSizeWidget {
   final bool isReadOnly;
   final bool hasBackButton;
+  final String query;
+  final ValueChanged<String> onChanged;
 
   SearchBarWidget({
     Key? key,
     required this.isReadOnly,
     required this.hasBackButton,
+    required this.onChanged, required this.query, // Add this line
   })  : preferredSize = const Size.fromHeight(AppBarHeight),
         super(key: key);
 
@@ -50,7 +54,7 @@ class SearchBarWidget extends StatelessWidget implements PreferredSizeWidget {
                   icon: const Icon(Icons.arrow_back))
               : Container(),
           SizedBox(
-            width: screenSize.width * 0.8,
+            width: screenSize.width * 0.74,
             child: Container(
               decoration: BoxDecoration(
                 boxShadow: [
@@ -67,19 +71,16 @@ class SearchBarWidget extends StatelessWidget implements PreferredSizeWidget {
                   // Navigator.push(
                   //   context,
                   //   MaterialPageRoute(
-                  //     builder: (context) => ResultsScreen(query: query),
+                  //     builder: (context) => SearchScreen(query: query),
                   //   ),
                   // );
                 },
+                onChanged: onChanged,
                 readOnly: isReadOnly,
-                // onTap: () {
-                //   if (isReadOnly) {
-                //     Navigator.push(
-                //         context,
-                //         MaterialPageRoute(
-                //             builder: (context) => const SearchScreen()));
-                //   }
-                // },
+                onTap: () {
+                  Get.to(() => SearchScreen(query: query,));
+                
+                },
                 decoration: InputDecoration(
                   contentPadding: const EdgeInsets.all(10),
                   hintText: "Search Amazon.eg ",
