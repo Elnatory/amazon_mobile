@@ -1,6 +1,5 @@
 import 'package:amazon_mobile/presentation/resources/cloud_firestore.dart';
 import 'package:amazon_mobile/presentation/widgets/main_button.dart';
-import 'package:amazon_mobile/presentation/widgets/text_field_widget.dart';
 import 'package:amazon_mobile/presentation/resources/color_manager.dart';
 import 'package:amazon_mobile/presentation/resources/constants.dart';
 import 'package:amazon_mobile/presentation/resources/utils.dart';
@@ -11,27 +10,26 @@ import 'package:get/route_manager.dart';
 import 'package:get/get.dart';
 
 class Registeration extends StatefulWidget {
-  const Registeration({super.key});
+  const Registeration({Key? key}) : super(key: key);
 
   @override
-  State<Registeration> createState() => _RegisterationState();
+  State<Registeration> createState() => _RegistrationState();
 }
 
-class _RegisterationState extends State<Registeration> {
+class _RegistrationState extends State<Registeration> {
   CloudFirestoreClass cloudFirestoreClass = CloudFirestoreClass();
   var auth = FirebaseAuth.instance;
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  var Muhammad_Omar = GlobalKey<FormState>();
-  final GlobalKey<FormState> _key = GlobalKey<FormState>();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   bool isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     Size screenSize = Utils().getScreenSize();
     return Scaffold(
-      key: Muhammad_Omar,
       backgroundColor: ColorManager.text,
       body: SingleChildScrollView(
         child: SizedBox(
@@ -59,6 +57,7 @@ class _RegisterationState extends State<Registeration> {
                       ),
                     ),
                     child: Form(
+                      key: formKey,
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -67,85 +66,92 @@ class _RegisterationState extends State<Registeration> {
                           const Text(
                             "Sign-Up",
                             style: TextStyle(
-                                fontWeight: FontWeight.w500, fontSize: 33),
+                              fontWeight: FontWeight.w500,
+                              fontSize: 33,
+                            ),
                           ),
-                          TextFieldWidget(
-                              title: "Name",
-                              controller: nameController,
-                              obscureText: false,
+                          TextFormField(
+                            controller: nameController,
+                            obscureText: false,
+                            decoration: InputDecoration(
+                              labelText: "Name",
                               hintText: "Enter your name",
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter a userName';
-                                }
-                                return null;
-                              }),
-                          TextFieldWidget(
-                            title: "Email",
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter a username';
+                              }
+                              return null;
+                            },
+                          ),
+                          TextFormField(
                             controller: emailController,
                             obscureText: false,
-                            hintText: "Enter your email",
-                          validator: (value) {
-                                bool emailValid=RegExp ( 
-                                   r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value) ;
+                            decoration: InputDecoration(
+                              labelText: "Email",
+                              hintText: "Enter your email",
+                            ),
+                            validator: (value) {
+                              bool emailValid = RegExp(
+                                r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+                              ).hasMatch(value ?? '');
 
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter an email';
-                                }
-
-                                 else if(!emailValid){
-                                    return "enter a valid email" ;
-                                   }
-                                return null;
-
-
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter an email';
+                              } else if (!emailValid) {
+                                return "Enter a valid email";
                               }
+                              return null;
+                            },
                           ),
-                          
-                          TextFieldWidget(
-                            title: "Password",
+                          TextFormField(
                             controller: passwordController,
                             obscureText: true,
-                            hintText: "Enter your password",
-                             validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter a password ';
-                                }
-                                else if (value.length<6) {
-                                  return 'Please enter minimum 6 characters';
-
-                                }
-                                return null;
+                            decoration: InputDecoration(
+                              labelText: "Password",
+                              hintText: "Enter your password",
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter a password';
+                              } else if (value.length < 6) {
+                                return 'Please enter at least 6 characters';
                               }
+                              return null;
+                            },
                           ),
                           Align(
                             alignment: Alignment.center,
                             child: CustomMainButton(
-                                child: const Text(
-                                  "Sign Up",
-                                  style: TextStyle(
-                                      letterSpacing: 0.6,
-                                      color: ColorManager.primary),
+                              child: const Text(
+                                "Sign Up",
+                                style: TextStyle(
+                                  letterSpacing: 0.6,
+                                  color: ColorManager.primary,
                                 ),
-                                color: ColorManager.yellowColor,
-                                isLoading: isLoading,
-                                onPressed: () async {
+                              ),
+                              color: ColorManager.yellowColor,
+                              isLoading: isLoading,
+                              onPressed: () async {
+                                if (formKey.currentState!.validate()) {
                                   try {
                                     var user = await auth
                                         .createUserWithEmailAndPassword(
-                                            email: emailController.text,
-                                            password: passwordController.text);
-                                    print("reg success");
+                                      email: emailController.text,
+                                      password: passwordController.text,
+                                    );
+                                    print("Registration success");
                                     await CloudFirestoreClass()
                                         .uploadNameAndEmailToDatabase(
                                       name: nameController.text,
                                       email: emailController.text,
                                     );
-                                    Navigator.pushReplacement(context,
-                                        MaterialPageRoute(builder: (context) {
-                                      return const Login();
-                                    }));
-                                    // Get.to(Login());
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => const Login(),
+                                      ),
+                                    );
                                     Get.snackbar(
                                       'You have registered',
                                       'Successfully',
@@ -168,17 +174,21 @@ class _RegisterationState extends State<Registeration> {
                                   } on FirebaseAuthException catch (e) {
                                     if (e.code == 'weak-password') {
                                       print(
-                                          'The password provided is too weak.');
+                                        'The password provided is too weak.',
+                                      );
                                     } else if (e.code ==
                                         'email-already-in-use') {
                                       print(
-                                          'The account already exists for that email.');
+                                        'The account already exists for that email.',
+                                      );
                                     }
                                   } catch (e) {
                                     print(e);
                                   }
-                                }),
-                          )
+                                } else {}
+                              },
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -194,7 +204,7 @@ class _RegisterationState extends State<Registeration> {
                       const Padding(
                         padding: EdgeInsets.symmetric(horizontal: 10),
                         child: Text(
-                          "already in amazon?",
+                          "Already in Amazon?",
                           style: TextStyle(color: Colors.grey),
                         ),
                       ),
@@ -207,21 +217,24 @@ class _RegisterationState extends State<Registeration> {
                     ],
                   ),
                   CustomMainButton(
-                      child: const Text(
-                        "Back",
-                        style: TextStyle(
-                          letterSpacing: 0.6,
-                          color: Colors.black,
-                        ),
+                    child: const Text(
+                      "Back",
+                      style: TextStyle(
+                        letterSpacing: 0.6,
+                        color: Colors.black,
                       ),
-                      color: Colors.grey[400]!,
-                      isLoading: false,
-                      onPressed: () {
-                        Navigator.pushReplacement(context,
-                            MaterialPageRoute(builder: (context) {
-                          return const Login();
-                        }));
-                      })
+                    ),
+                    color: Colors.grey[400]!,
+                    isLoading: false,
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const Login(),
+                        ),
+                      );
+                    },
+                  ),
                 ],
               ),
             ),

@@ -32,7 +32,7 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       home:  const Scaffold(
         backgroundColor: ColorManager.text,
-        body: ScreenLayout()
+        body: Registeration()
       ),
       // theme: getThemData(),
       // theme: ThemeData(
