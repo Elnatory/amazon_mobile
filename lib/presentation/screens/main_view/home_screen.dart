@@ -54,9 +54,9 @@ class _HomeState extends State<Home> {
       body: ListView(
         controller: controller,
         children: [
-           UserDetailsBar(
-                  offset: offset,
-                ),
+          UserDetailsBar(
+            offset: offset,
+          ),
           CategoriesList(),
           AdBannerWidget(),
           FutureBuilder<List<Product>>(
