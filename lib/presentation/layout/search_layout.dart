@@ -54,7 +54,7 @@ class SearchBarWidget extends StatelessWidget implements PreferredSizeWidget {
                   icon: const Icon(Icons.arrow_back))
               : Container(),
           SizedBox(
-            width: screenSize.width * 0.74,
+            width: screenSize.width * 0.8,
             child: Container(
               decoration: BoxDecoration(
                 boxShadow: [

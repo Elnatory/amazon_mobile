@@ -1,5 +1,6 @@
 import 'package:amazon_mobile/domain/model/products.dart';
 import 'package:amazon_mobile/presentation/layout/search_layout.dart';
+import 'package:amazon_mobile/presentation/layout/search_layout2.dart';
 import 'package:amazon_mobile/presentation/resources/cloud_firestore.dart';
 import 'package:amazon_mobile/presentation/screens/main_view/product_details.dart';
 import 'package:amazon_mobile/presentation/widgets/product_widget.dart';
@@ -65,7 +66,7 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: SearchBarWidget(
+      appBar: SearchBarWidget2(
         isReadOnly: false,
         hasBackButton: true,
         query: '',

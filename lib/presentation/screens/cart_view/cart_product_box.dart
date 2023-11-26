@@ -69,7 +69,7 @@ class _CartProductBoxState extends State<CartProductBox> {
                                 ),
                                 child: IconButton(
                                   onPressed: () {},
-                                  icon: Icon(Icons.remove),
+                                  icon: Icon(Icons.delete_outline),
                                 ),
                               ),
                               SizedBox(

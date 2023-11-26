@@ -1,4 +1,5 @@
 import 'package:amazon_mobile/presentation/layout/search_layout.dart';
+import 'package:amazon_mobile/presentation/layout/search_layout2.dart';
 import 'package:amazon_mobile/presentation/resources/color_manager.dart';
 import 'package:amazon_mobile/presentation/screens/cart_view/cart_product_box.dart';
 import 'package:amazon_mobile/presentation/screens/cart_view/cart_subtotal.dart';
@@ -36,7 +37,7 @@ class _CartState extends State<Cart> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: SearchBarWidget(
+        appBar: SearchBarWidget2(
           query: '',
           isReadOnly: false,
           hasBackButton: true,
