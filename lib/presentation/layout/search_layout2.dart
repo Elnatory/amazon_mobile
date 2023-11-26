@@ -1,7 +1,6 @@
 import 'package:amazon_mobile/presentation/resources/color_manager.dart';
 import 'package:amazon_mobile/presentation/resources/constants.dart';
 import 'package:amazon_mobile/presentation/resources/utils.dart';
-import 'package:amazon_mobile/presentation/screens/search_view.dart';
 import 'package:flutter/material.dart';
 
 class SearchBarWidget2 extends StatelessWidget implements PreferredSizeWidget {
@@ -30,7 +29,7 @@ class SearchBarWidget2 extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     Size screenSize = Utils().getScreenSize();
     return Container(
-      padding: EdgeInsets.only(top: 40, bottom: 10),
+      padding: const EdgeInsets.only(top: 40, bottom: 10),
       height: 90,
       decoration: const BoxDecoration(
         gradient: LinearGradient(
@@ -87,7 +86,7 @@ class SearchBarWidget2 extends StatelessWidget implements PreferredSizeWidget {
                   filled: true,
                   border: border,
                   focusedBorder: border,
-                  prefixIcon: Icon(
+                  prefixIcon: const Icon(
                     Icons.search,
                     color: Colors.black,
                   ),

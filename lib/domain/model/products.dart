@@ -72,4 +72,22 @@ class Product {
     }
     return null;
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'createdAt': createdAt,
+      'description': description,
+      'id': id,
+      'imageCover': imageCover,
+      'price': price,
+      'priceAfterDiscount': priceAfterDiscount,
+      'quantity': quantity,
+      'ratingsAverage': ratingsAverage,
+      'ratingsQuantity': ratingsQuantity,
+      'slug': slug,
+      'sold': sold,
+      'title': title,
+      'updatedAt': updatedAt,
+    };
+  }
 }

@@ -8,7 +8,6 @@ import 'package:amazon_mobile/presentation/widgets/product_widget.dart';
 import 'package:amazon_mobile/presentation/widgets/products_listview.dart';
 import 'package:amazon_mobile/presentation/widgets/user_details.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -57,13 +56,13 @@ class _HomeState extends State<Home> {
           UserDetailsBar(
             offset: offset,
           ),
-          CategoriesList(),
-          AdBannerWidget(),
+          const CategoriesList(),
+          const AdBannerWidget(),
           FutureBuilder<List<Product>>(
             future: getCloudFirestore().getProducts(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return CircularProgressIndicator();
+                return const CircularProgressIndicator();
               } else if (snapshot.hasError) {
                 return Text('Error: ${snapshot.error}');
               } else {
@@ -73,7 +72,7 @@ class _HomeState extends State<Home> {
                 }).toList();
 
                 return Transform.translate(
-                  offset: Offset(0, -40),
+                  offset: const Offset(0, -40),
                   child: ProductsShowcaseListView(
                     title: 'Shop by Products',
                     products: products,

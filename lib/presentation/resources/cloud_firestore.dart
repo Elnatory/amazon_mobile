@@ -57,7 +57,7 @@ class CloudFirestoreClass {
           await firebaseFirestore.collection("categories").get();
 
       List<Category> categoriesList = categoriesSnapshot.docs
-          .map((doc) => Category.fromMap(doc.data() as Map<String, dynamic>))
+          .map((doc) => Category.fromMap(doc.data()))
           .toList();
 
       return categoriesList;
@@ -73,7 +73,7 @@ Future<List<Product>> getProducts() async {
             await firebaseFirestore.collection('extras').get();
 
         List<Product> products = snapshot.docs
-            .map((doc) => Product.fromJson(doc.data() as Map<String, dynamic>))
+            .map((doc) => Product.fromJson(doc.data()))
             .toList();
 
         return products;
@@ -82,5 +82,64 @@ Future<List<Product>> getProducts() async {
         return [];
     }
 }
+
+
+Future<void> addProductToCart({required Product product}) async {
+    await firebaseFirestore
+    .collection('cart')
+    .doc(firebaseAuth.currentUser!.uid)
+    .collection('cart')
+    .add(product.toJson());
+}
+
+Future<List<Product>> getCartProducts() async {
+  try {
+    QuerySnapshot<Map<String, dynamic>> snapshot = await firebaseFirestore
+        .collection('cart')
+        .doc(firebaseAuth.currentUser!.uid)
+        .collection('cart')
+        .get();
+
+    List<Product> cartProducts = snapshot.docs
+        .map((doc) => Product.fromJson(doc.data()))
+        .toList();
+
+    return cartProducts;
+  } catch (e) {
+    print("Error fetching cart products: $e");
+    return [];
+  }
+}
+
+// Future<void> removeProductFromCart({required String uid}) async {
+//   await firebaseFirestore
+//       .collection('cart')
+//       .doc(firebaseAuth.currentUser!.uid)
+//       .collection('cart')
+//       .doc(uid)
+//       .delete();
+// }
+Future<void> removeProductFromCart({required String uid}) async {
+  try {
+    await firebaseFirestore
+        .collection('cart')
+        .doc(firebaseAuth.currentUser!.uid)
+        .collection('cart')
+        .where('uid', isEqualTo: uid)
+        .get()
+        .then((querySnapshot) {
+          for (var doc in querySnapshot.docs) {
+            doc.reference.delete();
+          }
+        });
+    print('Product with UID: $uid deleted successfully.');
+  } catch (e) {
+    print('Error removing product: $e');
+  }
+}
+
+
+
+
 
 }

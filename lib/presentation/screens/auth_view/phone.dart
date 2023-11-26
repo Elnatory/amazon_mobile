@@ -1,12 +1,13 @@
 import 'package:amazon_mobile/presentation/layout/screen_layout.dart';
 import 'package:amazon_mobile/presentation/resources/color_manager.dart';
-import 'package:amazon_mobile/presentation/screens/main_view/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/route_manager.dart';
 import 'package:get/get.dart';
 
 class PhoneNumberForm extends StatefulWidget {
+  const PhoneNumberForm({super.key});
+
   @override
   _PhoneNumberFormState createState() => _PhoneNumberFormState();
 }
@@ -20,7 +21,7 @@ class _PhoneNumberFormState extends State<PhoneNumberForm> {
     return Scaffold(
       backgroundColor: ColorManager.text,
       appBar: AppBar(
-        title: Text('Phone Number Verification',
+        title: const Text('Phone Number Verification',
             style: TextStyle(color: Colors.amber)),
         backgroundColor: ColorManager.primary,
       ),
@@ -31,11 +32,11 @@ class _PhoneNumberFormState extends State<PhoneNumberForm> {
           children: [
             TextField(
               controller: phoneNumberController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Phone Number',
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 String phoneNumber = '+${phoneNumberController.text.trim()}';
@@ -44,7 +45,7 @@ class _PhoneNumberFormState extends State<PhoneNumberForm> {
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all<Color>(Colors.amber),
               ),
-              child: Text(
+              child: const Text(
                 'Verify Phone Number',
                 style: TextStyle(color: ColorManager.text),
               ),
@@ -105,7 +106,7 @@ class _EnterCodeScreenState extends State<EnterCodeScreen> {
     return Scaffold(
       backgroundColor: ColorManager.text,
       appBar: AppBar(
-        title: Text('Enter Verification Code', style: TextStyle(color: Colors.amber),),
+        title: const Text('Enter Verification Code', style: TextStyle(color: Colors.amber),),
         backgroundColor: ColorManager.primary,
       ),
       body: Padding(
@@ -116,20 +117,20 @@ class _EnterCodeScreenState extends State<EnterCodeScreen> {
             TextField(
               controller: codeController,
               keyboardType: TextInputType.number,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Verification Code',
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 String verificationCode = codeController.text.trim();
                 verifyCode(verificationCode);
               },
-              child: Text('Verify Code'),
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all<Color>(Colors.amber),
-              )
+              ),
+              child: const Text('Verify Code')
             ),
           ],
         ),
@@ -168,7 +169,7 @@ class _EnterCodeScreenState extends State<EnterCodeScreen> {
       );
 
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
-        return ScreenLayout();
+        return const ScreenLayout();
       }));
       // Get.off(() => MainNav());
     } catch (e) {

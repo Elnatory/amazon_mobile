@@ -1,8 +1,8 @@
 import 'package:amazon_mobile/domain/model/products.dart';
-import 'package:amazon_mobile/presentation/layout/search_layout.dart';
 import 'package:amazon_mobile/presentation/layout/search_layout2.dart';
 import 'package:amazon_mobile/presentation/resources/cloud_firestore.dart';
 import 'package:amazon_mobile/presentation/resources/color_manager.dart';
+import 'package:amazon_mobile/presentation/resources/utils.dart';
 import 'package:amazon_mobile/presentation/widgets/product_widget.dart';
 import 'package:amazon_mobile/presentation/widgets/products_listview.dart';
 import 'package:amazon_mobile/presentation/widgets/rating_stars.dart';
@@ -107,15 +107,14 @@ class _ProductDetailsState extends State<ProductDetails> {
                     top: 4.0,
                     child: IconButton(
                       onPressed: () {
-                        // Handle the share action
+                        
                       },
-                      icon: Icon(Icons.share_outlined),
+                      icon: const Icon(Icons.share_outlined),
                     ),
                   ),
                 ],
               ),
               const SizedBox(height: 8.0),
-              // Display the discounted price and percentage of discount
               if (widget.singleProduct.priceAfterDiscount != null &&
                   discountPercentage != null)
                 Column(
@@ -149,7 +148,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                   ],
                 )
               else
-                // Only show the list price without discount
+
                 Text(
                   'EGP ${widget.singleProduct.price ?? 0}.00',
                   style: const TextStyle(
@@ -173,12 +172,12 @@ class _ProductDetailsState extends State<ProductDetails> {
                       }
                     },
                     padding: EdgeInsets.zero,
-                    child: CircleAvatar(
+                    child: const CircleAvatar(
                       backgroundColor: Colors.orange,
                       child: Icon(
                         Icons.remove,
                         color: ColorManager.text,
-                      ), // Set icon color to orange
+                      ),
                     ),
                   ),
                   const SizedBox(width: 12.0),
@@ -191,12 +190,12 @@ class _ProductDetailsState extends State<ProductDetails> {
                       });
                     },
                     padding: EdgeInsets.zero,
-                    child: CircleAvatar(
+                    child: const CircleAvatar(
                       backgroundColor: Colors.orange,
                       child: Icon(
                         Icons.add,
                         color: ColorManager.text,
-                      ), // Set icon color to orange
+                      ),
                     ),
                   ),
                 ],
@@ -208,7 +207,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                   future: getCloudFirestore().getProducts(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return CircularProgressIndicator();
+                      return const CircularProgressIndicator();
                     } else if (snapshot.hasError) {
                       return Text('Error: ${snapshot.error}');
                     } else {
@@ -218,7 +217,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                       }).toList();
 
                       return Transform.translate(
-                        offset: Offset(0, -40),
+                        offset: const Offset(0, -40),
                         child: ProductsShowcaseListView(
                           title: 'Shop by Products',
                           products: products,
@@ -237,17 +236,17 @@ class _ProductDetailsState extends State<ProductDetails> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
-              onPressed: () {
-                // AppProvider appProvider = Provider of <AppProvider>(context, listen: false);
-                // appProvider.addCartProduct(widget.singleProduct);
-                // showMessege("Added to Cart");
+              onPressed: () async {
+                await CloudFirestoreClass()
+                    .addProductToCart(product: widget.singleProduct);
+                Utils()
+                    .showSnackBar(context: context, content: "Added To Cart");
               },
               style: ElevatedButton.styleFrom(
-                primary: Colors.white, // background color
-                onPrimary: Colors.orange, // text color
-                side: BorderSide(color: Colors.orange), // border color
+                foregroundColor: Colors.orange, backgroundColor: Colors.white,
+                side: const BorderSide(color: Colors.orange),
               ),
-              child: Text('ADD TO CART'),
+              child: const Text('ADD TO CART'),
             ),
             const SizedBox(width: 24.0),
             SizedBox(
@@ -255,14 +254,13 @@ class _ProductDetailsState extends State<ProductDetails> {
               width: 140,
               child: ElevatedButton(
                 onPressed: () {
-                  // Buy now logic
+                  
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.orange, // background color
-                  onPrimary: Colors.white, // text color
-                  side: BorderSide(color: Colors.orange), // border color
+                  foregroundColor: Colors.white, backgroundColor: Colors.orange,
+                  side: const BorderSide(color: Colors.orange),
                 ),
-                child: Text('BUY'),
+                child: const Text('BUY'),
               ),
             )
           ],

@@ -88,12 +88,6 @@ class _RegisterationState extends State<Registeration> {
                         Align(
                           alignment: Alignment.center,
                           child: CustomMainButton(
-                              child: const Text(
-                                "Sign Up",
-                                style: TextStyle(
-                                    letterSpacing: 0.6,
-                                    color: ColorManager.primary),
-                              ),
                               color: ColorManager.yellowColor,
                               isLoading: isLoading,
                               onPressed: () async {
@@ -142,7 +136,13 @@ class _RegisterationState extends State<Registeration> {
                                 } catch (e) {
                                   print(e);
                                 }
-                              }),
+                              },
+                              child: const Text(
+                                "Sign Up",
+                                style: TextStyle(
+                                    letterSpacing: 0.6,
+                                    color: ColorManager.primary),
+                              )),
                         )
                       ],
                     ),
@@ -171,13 +171,6 @@ class _RegisterationState extends State<Registeration> {
                     ],
                   ),
                   CustomMainButton(
-                      child: const Text(
-                        "Back",
-                        style: TextStyle(
-                          letterSpacing: 0.6,
-                          color: Colors.black,
-                        ),
-                      ),
                       color: Colors.grey[400]!,
                       isLoading: false,
                       onPressed: () {
@@ -185,7 +178,14 @@ class _RegisterationState extends State<Registeration> {
                             MaterialPageRoute(builder: (context) {
                           return const Login();
                         }));
-                      })
+                      },
+                      child: const Text(
+                        "Back",
+                        style: TextStyle(
+                          letterSpacing: 0.6,
+                          color: Colors.black,
+                        ),
+                      ))
                 ],
               ),
             ),
