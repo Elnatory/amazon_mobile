@@ -1,81 +1,76 @@
+import 'package:amazon_mobile/domain/model/products.dart';
 import 'package:amazon_mobile/presentation/layout/search_layout.dart';
+import 'package:amazon_mobile/presentation/resources/cloud_firestore.dart';
 import 'package:amazon_mobile/presentation/resources/color_manager.dart';
-import 'package:amazon_mobile/presentation/screens/cart_view/cart_product_box.dart';
+import 'package:amazon_mobile/presentation/resources/constants.dart';
+import 'package:amazon_mobile/presentation/resources/utils.dart';
+import 'package:amazon_mobile/presentation/screens/cart_view/cart_boxes.dart';
 import 'package:amazon_mobile/presentation/screens/cart_view/cart_subtotal.dart';
+import 'package:amazon_mobile/presentation/widgets/main_button.dart';
 import 'package:amazon_mobile/presentation/widgets/user_details.dart';
-import 'package:flutter/foundation.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class Cart extends StatefulWidget {
-  const Cart({super.key});
-  set query(String query) {}
+  const Cart({Key? key}) : super(key: key);
 
   @override
   State<Cart> createState() => _CartState();
 }
 
 class _CartState extends State<Cart> {
-  ScrollController controller = ScrollController();
-  double offset = 0;
-  @override
-  void initState() {
-    super.initState();
-    controller.addListener(() {
-      setState(() {
-        offset = controller.position.pixels;
-      });
-    });
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    controller.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: SearchBarWidget(
-          query: '',
-          isReadOnly: false,
-          hasBackButton: true,
-          onChanged: (value) => setState(() {
-            widget.query = value;
-          }),
-        ),
-        backgroundColor: ColorManager.backgroundColor,
-        body: Column(
+      //==========================================================appBar: AppBar
+      appBar: SearchBarWidget(
+        hasBackButton: false,
+        isReadOnly: true,
+        onChanged: (String value) {},
+        query: '',
+      ),
+      body: Center(
+        child: Stack(
           children: [
-            SafeArea(
-              child: Row(
-                children: [
-                  UserDetailsBar(
-                    offset: offset,
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Container(
-              width: double.infinity,
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+            Column(
+              children: [
+                const SizedBox(
+                  height: AppBarHeight / 2,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SizedBox(
-                      height: 30,
-                      child: Subtotal()),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
+                      child: StreamBuilder(
+                        stream: CloudFirestoreClass().getCartProductsStream(),
+                        builder:
+                            (context, AsyncSnapshot<List<Product>> snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return SizedBox(
+                              height: 30,
+                              child: CircularProgressIndicator(),
+                            );
+                          } else {
+                            return SizedBox(
+                              height: 30,
+                              child: Subtotal(products: snapshot.data ?? []),
+                            );
+                          }
+                        },
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(1.0),
                       child: Row(
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.check_circle_outline,
                             color: Colors.green,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 6,
                           ),
                           Flexible(
@@ -91,7 +86,7 @@ class _CartState extends State<Cart> {
                                 ),
                                 Row(
                                   children: [
-                                    Text(
+                                    const Text(
                                       'Choose this option at checkout.',
                                       style: TextStyle(fontSize: 15),
                                     ),
@@ -109,76 +104,73 @@ class _CartState extends State<Cart> {
                                     ),
                                   ],
                                 ),
-
                               ],
                             ),
                           ),
                         ],
                       ),
                     ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Container(
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: MaterialButton(
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: StreamBuilder(
+                    stream: CloudFirestoreClass().getCartProductsStream(),
+                    builder: (context, AsyncSnapshot<List<Product>> snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return CustomMainButton(
+                          child: const Text("Loading"),
+                          color: ColorManager.yellowColor,
+                          isLoading: true,
                           onPressed: () {},
-                          padding: EdgeInsets.all(20.0),
-                          minWidth: double.infinity,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5.0)),
-                          color: Color.fromARGB(255, 239, 199, 20),
+                        );
+                      } else {
+                        return CustomMainButton(
+                          color: ColorManager.yellowColor,
+                          isLoading: false,
+                          onPressed: () async {
+                            // Implement your buy functionality here
+                            Utils().showSnackBar(
+                                context: context, content: "Done");
+                          },
                           child: Text(
-                            'Proceed to Buy (cart items count)',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold),
+                            "Proceed to buy (${snapshot.data!.length}) items",
+                            style: const TextStyle(color: Colors.black),
                           ),
-                        ),
-                      ),
-                    )
-                  ]),
-            ),
-            CartProductBox(),
-            SizedBox(
-              height: 10,
-            ),
-            Container(
-              child: Row(children: [
-                Container(
-                  width: 260,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Returns are easy',style: TextStyle(fontSize: 18,fontWeight: FontWeight.w600),),
-                        SizedBox(height: 5,),
-                        Text('Return items within 30 days of delivery'),
-                      ],
-                    ),
+                        );
+                      }
+                    },
                   ),
                 ),
-                Container(
-                  width: 100,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Image(
-                        height: 50,
-                        width: 50,
-                        image: NetworkImage('https://picsum.photos/200/300')),
-                    ],
+                Expanded(
+                  child: StreamBuilder(
+                    stream: CloudFirestoreClass().getCartProductsStream(),
+                    builder: (context, AsyncSnapshot<List<Product>> snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Container();
+                      } else {
+                        return ListView.builder(
+                          itemCount: snapshot.data!.length,
+                          itemBuilder: (context, index) {
+                            Product model = snapshot.data![index];
+                            return CartItemWidget(product: model);
+                          },
+                        );
+                      }
+                    },
                   ),
                 ),
-              ]),
-            )
+              ],
+            ),
+            const UserDetailsBar(
+              offset: 0,
+            ),
           ],
-        )
-        );
+        ),
+      ),
+    );
   }
 }

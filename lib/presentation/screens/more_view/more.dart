@@ -1,5 +1,4 @@
 import 'package:amazon_mobile/presentation/resources/color_manager.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class More extends StatefulWidget {

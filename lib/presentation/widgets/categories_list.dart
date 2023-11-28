@@ -1,11 +1,10 @@
 import 'package:amazon_mobile/domain/model/category.dart';
 import 'package:amazon_mobile/presentation/resources/cloud_firestore.dart';
-import 'package:amazon_mobile/presentation/resources/color_manager.dart';
 import 'package:amazon_mobile/presentation/resources/constants.dart';
 import 'package:flutter/material.dart';
 
 class CategoriesList extends StatefulWidget {
-  const CategoriesList({Key? key});
+  const CategoriesList({Key? key}) : super(key: key);
 
   @override
   State<CategoriesList> createState() => _CategoriesListState();
@@ -42,7 +41,7 @@ class _CategoriesListState extends State<CategoriesList> {
     return Container(
       height: AppBarHeight,
       width: double.infinity,
-      color: Color.fromARGB(255, 254, 244, 181),
+      color: const Color.fromARGB(255, 254, 244, 181),
       child: categories != null
           ? ListView.builder(
               itemCount: categories!.length,
@@ -65,7 +64,7 @@ class _CategoriesListState extends State<CategoriesList> {
                           const SizedBox(height: 8),
                           Text(
                             categories![index].name,
-                            style: TextStyle(color: Colors.black),
+                            style: const TextStyle(color: Colors.black),
                           ),
                         ],
                       ),
@@ -76,7 +75,7 @@ class _CategoriesListState extends State<CategoriesList> {
                 }
               },
             )
-          : Center(
+          : const Center(
               child: CircularProgressIndicator(),
             ),
     );

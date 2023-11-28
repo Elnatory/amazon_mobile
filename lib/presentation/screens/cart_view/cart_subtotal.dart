@@ -1,48 +1,52 @@
+import 'package:amazon_mobile/domain/model/products.dart';
 import 'package:flutter/material.dart';
 
-class Subtotal extends StatefulWidget {
-  const Subtotal({super.key});
+class Subtotal extends StatelessWidget {
+  final List<Product> products;
 
-  @override
-  State<Subtotal> createState() => _SubtotalState();
-}
+  Subtotal({Key? key, required this.products}) : super(key: key);
 
-class _SubtotalState extends State<Subtotal> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        height: 50,
-        child: Row(
-          children: [
-            Text("Subtotal",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
-            SizedBox(width: 10,),
-            RichText(
-  text: TextSpan(
-    style: DefaultTextStyle.of(context).style,
-    children: [
-      TextSpan(
-            text: '0.00',
-            style: TextStyle(
-              fontSize: 18, // You can adjust the size to fit your design
-              color: Colors.black, // You can set the color you prefer
+    double total = products.fold(0, (sum, product) {
+      int productTotal = (product.priceAfterDiscount ?? product.price ?? 0) * ( 1);
+      return sum + productTotal;
+    });
+
+    return Container(
+      height: 50,
+      child: Row(
+        children: [
+          Text(
+            "Subtotal",
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(width: 10),
+          RichText(
+            text: TextSpan(
+              style: DefaultTextStyle.of(context).style,
+              children: [
+                TextSpan(
+                  text: total.toStringAsFixed(2),
+                  style: TextStyle(
+                    fontSize: 25,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                TextSpan(
+                  text: ' EGP',
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+              ],
             ),
+          ),
+        ],
       ),
-      TextSpan(
-            text: 'EGP',
-            style: TextStyle(
-              fontSize: 13, // You can adjust the size to fit your design
-              fontWeight: FontWeight.bold,
-              color: Colors.black, // You can set the color you prefer
-            ),
-      ),
-    ],
-  ),
-),
-          ],
-        )
-),
-      
     );
   }
 }

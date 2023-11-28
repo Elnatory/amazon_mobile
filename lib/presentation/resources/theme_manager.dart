@@ -9,7 +9,7 @@ ThemeData getThemData() {
       elevation: 0.0,
     ),
     textTheme: const TextTheme(
-      bodyText1: TextStyle(
+      bodyLarge: TextStyle(
         color: ColorManager.text,
       ),
     ),

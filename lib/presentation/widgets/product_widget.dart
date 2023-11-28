@@ -24,7 +24,7 @@ class ProductWidget extends StatelessWidget {
             Expanded(
               child: Stack(
                 children: [
-                  Container(
+                  SizedBox(
                     width: 100.0,
                     height: 100.0,
                     child: GestureDetector(
@@ -54,14 +54,14 @@ class ProductWidget extends StatelessWidget {
                       top: 4,
                       left: 4,
                       child: Container(
-                        padding: EdgeInsets.all(4),
+                        padding: const EdgeInsets.all(4),
                         decoration: BoxDecoration(
                           color: Colors.red,
                           borderRadius: BorderRadius.circular(4),
                         ),
                         child: Text(
                           '${discountPercentage.toStringAsFixed(0)}% OFF',
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 10.0,
                             fontWeight: FontWeight.bold,
@@ -92,7 +92,7 @@ class ProductWidget extends StatelessWidget {
                   if (product.priceAfterDiscount != null)
                     Text(
                       'EGP ${product.priceAfterDiscount ?? 0}',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 14.0,
                       ),
                     ),
