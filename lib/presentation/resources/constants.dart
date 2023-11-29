@@ -66,3 +66,12 @@ const List<String> adItemNames = [
   "Rewards",
   "Pay Bills"
 ];
+
+
+List<String> keysOfRating = [
+  "Very bad",
+  "Poor",
+  "Average",
+  "Good",
+  "Excellent"
+];

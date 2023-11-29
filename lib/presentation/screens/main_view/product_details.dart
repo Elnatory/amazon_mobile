@@ -1,20 +1,28 @@
+import 'package:amazon_mobile/data/provider/app_provider.dart';
 import 'package:amazon_mobile/domain/model/products.dart';
 import 'package:amazon_mobile/presentation/layout/search_layout2.dart';
 import 'package:amazon_mobile/presentation/resources/cloud_firestore.dart';
 import 'package:amazon_mobile/presentation/resources/color_manager.dart';
 import 'package:amazon_mobile/presentation/resources/utils.dart';
+import 'package:amazon_mobile/presentation/screens/checkout_view/checkout_screen.dart';
+import 'package:amazon_mobile/presentation/screens/favourite_view/fav.dart';
 import 'package:amazon_mobile/presentation/widgets/product_widget.dart';
 import 'package:amazon_mobile/presentation/widgets/products_listview.dart';
 import 'package:amazon_mobile/presentation/widgets/rating_stars.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
+import 'package:provider/provider.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class ProductDetails extends StatefulWidget {
   final Product singleProduct;
 
   const ProductDetails({Key? key, required this.singleProduct})
       : super(key: key);
-      set query(String query) {}
+  set query(String query) {}
 
   @override
   State<ProductDetails> createState() => _ProductDetailsState();
@@ -29,9 +37,13 @@ class _ProductDetailsState extends State<ProductDetails> {
   }
 
   int qty = 1;
-
+  FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+  FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
+    AppProvider appProvider = Provider.of<AppProvider>(
+      context,
+    );
     double? discountPercentage;
     if (widget.singleProduct.price != null &&
         widget.singleProduct.priceAfterDiscount != null) {
@@ -39,7 +51,7 @@ class _ProductDetailsState extends State<ProductDetails> {
               widget.singleProduct.price!) *
           100);
     }
-
+    Size screenSize = Utils().getScreenSize();
     return Scaffold(
       backgroundColor: ColorManager.text,
       appBar: SearchBarWidget2(
@@ -96,14 +108,26 @@ class _ProductDetailsState extends State<ProductDetails> {
                     child: IconButton(
                       onPressed: () {
                         setState(() {
-                          isFavorited = !isFavorited;
+                          widget.singleProduct.isFavourite =
+                              !(widget.singleProduct.isFavourite ?? false);
+
+                          AppProvider appProvider =
+                              Provider.of<AppProvider>(context, listen: false);
+
+                          if (widget.singleProduct.isFavourite!) {
+                            appProvider.addFavProduct(widget.singleProduct);
+                          } else {
+                            appProvider.removeFavProduct(widget.singleProduct);
+                          }
                         });
                       },
                       icon: Icon(
-                        isFavorited
+                        appProvider.getfavProductList.contains(widget.singleProduct) ?? false
                             ? Icons.favorite_rounded
                             : Icons.favorite_border_rounded,
-                        color: isFavorited ? Colors.red : null,
+                        color: widget.singleProduct.isFavourite ?? false
+                            ? Colors.red
+                            : null,
                       ),
                     ),
                   ),
@@ -111,9 +135,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                     right: 4.0,
                     top: 4.0,
                     child: IconButton(
-                      onPressed: () {
-                        
-                      },
+                      onPressed: () {},
                       icon: const Icon(Icons.share_outlined),
                     ),
                   ),
@@ -153,7 +175,6 @@ class _ProductDetailsState extends State<ProductDetails> {
                   ],
                 )
               else
-
                 Text(
                   'EGP ${widget.singleProduct.price ?? 0}.00',
                   style: const TextStyle(
@@ -242,13 +263,30 @@ class _ProductDetailsState extends State<ProductDetails> {
           children: [
             ElevatedButton(
               onPressed: () async {
-                await CloudFirestoreClass()
-                    .addProductToCart(product: widget.singleProduct);
+                // await CloudFirestoreClass().addProductToCart(
+                //     product: widget.singleProduct, newQuantity: qty);
+                // await CloudFirestoreClass().addProductToCart(
+                //     product: widget.singleProduct);
+                AppProvider appProvider =
+                    Provider.of<AppProvider>(context, listen: false);
+                print('Before addCartProduct');
+                Product product = widget.singleProduct.copyWith(qty: qty);
+                appProvider.addCartProduct(product);
+                print('After addCartProduct');
+                // FlutterToast.showToast(
+                //     msg: "Added To Cart",
+                //     toastLength: Toast.LENGTH_SHORT,
+                //     gravity: ToastGravity.BOTTOM,
+                //     timeInSecForIosWeb: 1,
+                //     backgroundColor: ColorManager.text,
+                //     textColor: Colors.white,
+                //     fontSize: 16.0);
                 Utils()
                     .showSnackBar(context: context, content: "Added To Cart");
               },
               style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.orange, backgroundColor: Colors.white,
+                foregroundColor: Colors.orange,
+                backgroundColor: Colors.white,
                 side: const BorderSide(color: Colors.orange),
               ),
               child: const Text('ADD TO CART'),
@@ -258,11 +296,18 @@ class _ProductDetailsState extends State<ProductDetails> {
               height: 38,
               width: 140,
               child: ElevatedButton(
-                onPressed: () {
-                  
+                onPressed: () async {
+                  // await CloudFirestoreClass()
+                  //     .addProductToOrders(product: widget.singleProduct);
+                  // Get.to(FavScreen());
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Checkout()),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.white, backgroundColor: Colors.orange,
+                  foregroundColor: Colors.white,
+                  backgroundColor: Colors.orange,
                   side: const BorderSide(color: Colors.orange),
                 ),
                 child: const Text('BUY'),

@@ -1,3 +1,4 @@
+import 'package:amazon_mobile/data/provider/app_provider.dart';
 import 'package:amazon_mobile/domain/model/products.dart';
 import 'package:amazon_mobile/presentation/layout/search_layout.dart';
 import 'package:amazon_mobile/presentation/resources/cloud_firestore.dart';
@@ -6,11 +7,13 @@ import 'package:amazon_mobile/presentation/resources/constants.dart';
 import 'package:amazon_mobile/presentation/resources/utils.dart';
 import 'package:amazon_mobile/presentation/screens/cart_view/cart_boxes.dart';
 import 'package:amazon_mobile/presentation/screens/cart_view/cart_subtotal.dart';
+import 'package:amazon_mobile/presentation/screens/checkout_view/checkout_screen.dart';
 import 'package:amazon_mobile/presentation/widgets/main_button.dart';
 import 'package:amazon_mobile/presentation/widgets/user_details.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Cart extends StatefulWidget {
   const Cart({Key? key}) : super(key: key);
@@ -22,6 +25,9 @@ class Cart extends StatefulWidget {
 class _CartState extends State<Cart> {
   @override
   Widget build(BuildContext context) {
+    AppProvider appProvider = Provider.of<AppProvider>(
+      context,
+    );
     return Scaffold(
       //==========================================================appBar: AppBar
       appBar: SearchBarWidget(
@@ -54,9 +60,16 @@ class _CartState extends State<Cart> {
                               child: CircularProgressIndicator(),
                             );
                           } else {
+                            List<int> quantities = List<int>.filled(
+                              snapshot.data?.length ?? 0,
+                              1,
+                            );
                             return SizedBox(
                               height: 30,
-                              child: Subtotal(products: snapshot.data ?? []),
+                              child: Subtotal(
+                                products: snapshot.data ?? [],
+                                quantities: quantities,
+                              ),
                             );
                           }
                         },
@@ -132,9 +145,16 @@ class _CartState extends State<Cart> {
                           color: ColorManager.yellowColor,
                           isLoading: false,
                           onPressed: () async {
-                            // Implement your buy functionality here
+                            await CloudFirestoreClass().buyAllItemsInCart();
                             Utils().showSnackBar(
                                 context: context, content: "Done");
+                            Future.delayed(Duration(seconds: 2), () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Checkout()),
+                              );
+                            });
                           },
                           child: Text(
                             "Proceed to buy (${snapshot.data!.length}) items",
@@ -146,22 +166,29 @@ class _CartState extends State<Cart> {
                   ),
                 ),
                 Expanded(
-                  child: StreamBuilder(
-                    stream: CloudFirestoreClass().getCartProductsStream(),
-                    builder: (context, AsyncSnapshot<List<Product>> snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Container();
-                      } else {
-                        return ListView.builder(
-                          itemCount: snapshot.data!.length,
-                          itemBuilder: (context, index) {
-                            Product model = snapshot.data![index];
-                            return CartItemWidget(product: model);
-                          },
-                        );
-                      }
+                  child: ListView.builder(
+                    itemCount: appProvider.getCartProductList.length,
+                    itemBuilder: (context, index) {
+                      Product model = appProvider.getCartProductList[index];
+                      return CartItemWidget(product: model);
                     },
                   ),
+                  // child: StreamBuilder(
+                  //   stream: CloudFirestoreClass().getCartProductsStream(),
+                  //   builder: (context, AsyncSnapshot<List<Product>> snapshot) {
+                  //     if (snapshot.connectionState == ConnectionState.waiting) {
+                  //       return Container();
+                  //     } else {
+                  //       return ListView.builder(
+                  //         itemCount: snapshot.data!.length,
+                  //         itemBuilder: (context, index) {
+                  //           Product model = snapshot.data![index];
+                  //           return CartItemWidget(product: model);
+                  //         },
+                  //       );
+                  //     }
+                  //   },
+                  // ),
                 ),
               ],
             ),

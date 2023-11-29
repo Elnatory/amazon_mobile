@@ -8,6 +8,7 @@ class ProductInformationWidget extends StatelessWidget {
   final double cost;
   final double? discount;
   final String sellerName;
+  final int? quantity;
 
   const ProductInformationWidget({
     Key? key,
@@ -15,6 +16,7 @@ class ProductInformationWidget extends StatelessWidget {
     required this.cost,
     this.discount,
     required this.sellerName,
+    this.quantity = 1,
   }) : super(key: key);
 
   @override
@@ -23,9 +25,11 @@ class ProductInformationWidget extends StatelessWidget {
     SizedBox spaceThingy = const SizedBox(
       height: 7,
     );
-    
+
+    double totalCost = cost * (quantity ?? 1); // Replace '?? 1' with your default quantity
+
     double percentageDiscount = (discount != null && discount! > 0)
-        ? ((cost - discount!) / cost) * 100
+        ? ((totalCost - discount!) / totalCost) * 100
         : 0.0;
 
     return SizedBox(
@@ -59,6 +63,7 @@ class ProductInformationWidget extends StatelessWidget {
                     RichText(
                       text: TextSpan(
                         children: [
+                          // Replace the comments with your discount representation
                           // TextSpan(
                           //   text: 'EGP ',
                           //   style: TextStyle(
@@ -78,7 +83,7 @@ class ProductInformationWidget extends StatelessWidget {
                         ],
                       ),
                     ),
-                  CostWidget(color: Colors.black, cost: cost),
+                  CostWidget(color: Colors.black, cost: totalCost), // Use total cost
                   if (discount != null)
                     Padding(
                       padding: const EdgeInsets.only(top: 4),
@@ -126,7 +131,18 @@ class ProductInformationWidget extends StatelessWidget {
                 ],
               ),
             ),
-          )
+          ),
+          spaceThingy,
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              'Quantity: ${quantity ?? 1}',
+              style: const TextStyle(
+                color: Colors.grey,
+                fontSize: 14,
+              ),
+            ),
+          ),
         ],
       ),
     );

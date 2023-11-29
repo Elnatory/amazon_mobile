@@ -1,15 +1,26 @@
+import 'package:amazon_mobile/data/provider/app_provider.dart';
 import 'package:amazon_mobile/domain/model/products.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Subtotal extends StatelessWidget {
   final List<Product> products;
+  final List<int> quantities; // Add list of quantities
 
-  Subtotal({Key? key, required this.products}) : super(key: key);
+  Subtotal({Key? key, required this.products, required this.quantities})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    AppProvider appProvider = Provider.of<AppProvider>(
+      context,
+    );
     double total = products.fold(0, (sum, product) {
-      int productTotal = (product.priceAfterDiscount ?? product.price ?? 0) * ( 1);
+      int index = products.indexOf(product);
+      int quantity = quantities[index];
+
+      double productTotal = (product.priceAfterDiscount ?? product.price ?? 0) *
+          quantity.toDouble();
       return sum + productTotal;
     });
 
@@ -27,7 +38,7 @@ class Subtotal extends StatelessWidget {
               style: DefaultTextStyle.of(context).style,
               children: [
                 TextSpan(
-                  text: total.toStringAsFixed(2),
+                  text: appProvider.totalPrice().toStringAsFixed(2),
                   style: TextStyle(
                     fontSize: 25,
                     color: Colors.black,

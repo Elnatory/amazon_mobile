@@ -1,9 +1,11 @@
+import 'package:amazon_mobile/domain/model/products.dart';
 import 'package:flutter/material.dart';
 
 class CartProductBox extends StatefulWidget {
+  final Product singleProduct;
   // final int index;
   const CartProductBox({
-    super.key,
+    super.key, required this.singleProduct,
   });
 
   @override
@@ -31,7 +33,8 @@ class _CartProductBoxState extends State<CartProductBox> {
                 ],
               ),
               Container(
-                child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                child:
+                    Row(mainAxisAlignment: MainAxisAlignment.start, children: [
                   Image(
                       height: 100,
                       width: 100,
@@ -65,7 +68,8 @@ class _CartProductBoxState extends State<CartProductBox> {
                               Container(
                                 height: 30,
                                 decoration: BoxDecoration(
-                                  border: Border.all(width: 0.3, color: Colors.grey),
+                                  border: Border.all(
+                                      width: 0.3, color: Colors.grey),
                                 ),
                                 child: IconButton(
                                   onPressed: () {},
@@ -73,7 +77,7 @@ class _CartProductBoxState extends State<CartProductBox> {
                                 ),
                               ),
                               SizedBox(
-                                width:90,
+                                width: 90,
                                 height: 30,
                                 child: Center(
                                   child: Text(
@@ -83,10 +87,10 @@ class _CartProductBoxState extends State<CartProductBox> {
                                 ),
                               ),
                               Container(
-                                height: 30,
+                                  height: 30,
                                   decoration: BoxDecoration(
-                                    border:
-                                        Border.all(width: 0.3, color: Colors.grey),
+                                    border: Border.all(
+                                        width: 0.3, color: Colors.grey),
                                   ),
                                   child: IconButton(
                                     onPressed: () {},
@@ -102,7 +106,8 @@ class _CartProductBoxState extends State<CartProductBox> {
                             onPressed: () {},
                             child: Container(
                               decoration: BoxDecoration(
-                                border: Border.all(width: 1, color: Colors.grey),
+                                border:
+                                    Border.all(width: 1, color: Colors.grey),
                               ),
                               child: Text(
                                 'Delete',
@@ -113,7 +118,8 @@ class _CartProductBoxState extends State<CartProductBox> {
                             onPressed: () {},
                             child: Container(
                               decoration: BoxDecoration(
-                                border: Border.all(width: 1, color: Colors.grey),
+                                border:
+                                    Border.all(width: 1, color: Colors.grey),
                               ),
                               child: Text(
                                 'Save for later',

@@ -1,4 +1,3 @@
-
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -9,7 +8,10 @@ class Utils {
     return MediaQueryData.fromView(WidgetsBinding.instance.window).size;
   }
 
-  showSnackBar({required BuildContext context, required String content}) {
+  void showSnackBar(
+      {required BuildContext context,
+      required String content,
+      Duration duration = const Duration(seconds: 1)}) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         backgroundColor: Colors.orange,
@@ -20,7 +22,7 @@ class Utils {
           ),
         ),
         content: SizedBox(
-          width: getScreenSize().width,
+          width: MediaQuery.of(context).size.width,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -32,6 +34,7 @@ class Utils {
             ],
           ),
         ),
+        duration: duration, // Specify the duration here
       ),
     );
   }

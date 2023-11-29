@@ -13,6 +13,8 @@ class Product {
   final int? sold;
   final String? title;
   final String? updatedAt;
+  int? qty;
+  bool? isFavourite;
 
   final String? brandId;
   final String? brandImage;
@@ -38,6 +40,8 @@ class Product {
     required this.brandImage,
     required this.brandName,
     required this.brandSlug,
+    required this.qty,
+    required this.isFavourite,
   });
 
   factory Product.fromJson(Map<String, dynamic> json) {
@@ -60,6 +64,8 @@ class Product {
       brandImage: json['brand']?['image'] as String?,
       brandName: json['brand']?['name'] as String?,
       brandSlug: json['brand']?['slug'] as String?,
+      qty: json['qty'],
+      isFavourite: json['isFavourite'],
     );
   }
 
@@ -110,7 +116,36 @@ class Product {
         'image': brandImage,
         'name': brandName,
         'slug': brandSlug,
-      }
+      },
+      'qty': qty,
+      'isFavourite': isFavourite,
     };
   }
+
+  @override
+  Product copyWith({
+    int? qty,
+  }) =>
+      Product(
+        createdAt: createdAt ,
+        description: description ,
+        id: id ,
+        imageCover: imageCover ,
+        images: images ,
+        price: price ,
+        priceAfterDiscount: priceAfterDiscount ,
+        quantity: quantity ,
+        ratingsAverage: ratingsAverage ,
+        ratingsQuantity: ratingsQuantity ,
+        slug: slug ,
+        sold: sold ,
+        title: title ,
+        updatedAt: updatedAt ,
+        brandId: brandId ,
+        brandImage: brandImage ,
+        brandName: brandName ,
+        brandSlug: brandSlug,
+        qty: qty ?? this.qty,
+        isFavourite: isFavourite,
+      );
 }
