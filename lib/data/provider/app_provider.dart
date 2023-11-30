@@ -37,16 +37,33 @@ class AppProvider with ChangeNotifier {
   // Total Price================================================================
 
   double totalPrice() {
-    double total = 0.0;
-    _cartProductList.forEach((element) {
-      total += (element.price ?? 0) * (element.qty ?? 0);
-    });
-    return total;
+  double total = 0.0;
+  for (Product element in _cartProductList) {
+    double price = (element.priceAfterDiscount ?? element.price ?? 0).toDouble();
+    total += price * (element.qty ?? 0);
   }
+  return total;
+}
 
+
+
+  // Update Qty=================================================================
+  
   void updateQty(Product product, int qty) {
     int index = _cartProductList.indexOf(product);
     _cartProductList[index].qty = qty;
     notifyListeners();
   }
+
+  // Total Qty==================================================================
+
+  int calculateTotalQuantity() {
+    int totalQuantity = 0;
+    for (Product product in _cartProductList) {
+      totalQuantity += product.qty ?? 0;
+    }
+    return totalQuantity;
+  }
+
+
 }

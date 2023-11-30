@@ -80,8 +80,8 @@ class _CartState extends State<Cart> {
                       child: Row(
                         children: [
                           const Icon(
-                            Icons.check_circle_outline,
-                            color: Colors.green,
+                            Icons.check_circle,
+                            color: Color.fromARGB(255, 0, 123, 4),
                           ),
                           const SizedBox(
                             width: 6,
@@ -91,11 +91,11 @@ class _CartState extends State<Cart> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Your order qualifies for free delivery',
+                                  'Your order qualifies for FREE Shipping',
                                   style: TextStyle(
-                                      color: Colors.teal[900],
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold),
+                                    color: Colors.teal[700],
+                                    fontSize: 18,
+                                  ),
                                 ),
                                 Row(
                                   children: [
@@ -129,7 +129,12 @@ class _CartState extends State<Cart> {
                   height: 10,
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.only(
+                    top: 8.0,
+                    left: 8.0,
+                    right: 8.0,
+                    bottom: 0.0,
+                  ),
                   child: StreamBuilder(
                     stream: CloudFirestoreClass().getCartProductsStream(),
                     builder: (context, AsyncSnapshot<List<Product>> snapshot) {
@@ -141,6 +146,8 @@ class _CartState extends State<Cart> {
                           onPressed: () {},
                         );
                       } else {
+                        int totalQuantity = Provider.of<AppProvider>(context)
+                            .calculateTotalQuantity();
                         return CustomMainButton(
                           color: ColorManager.yellowColor,
                           isLoading: false,
@@ -156,9 +163,13 @@ class _CartState extends State<Cart> {
                               );
                             });
                           },
-                          child: Text(
-                            "Proceed to buy (${snapshot.data!.length}) items",
-                            style: const TextStyle(color: Colors.black),
+                          child: SizedBox(
+                            width: 200,
+                            child: Text(
+                              "Proceed to Buy (${totalQuantity} item)",
+                              style: const TextStyle(
+                                  color: Colors.black, fontSize: 18.0),
+                            ),
                           ),
                         );
                       }

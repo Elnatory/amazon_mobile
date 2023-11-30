@@ -38,8 +38,8 @@ class _CartItemWidgetState extends State<CartItemWidget> {
     // final productCart =context.watch<userProvider>().user.cart[widget.index];
     Size screenSize = Utils().getScreenSize();
     return Container(
-      padding: const EdgeInsets.all(22),
-      height: screenSize.height / 2,
+      padding: const EdgeInsets.all(8),
+      height: screenSize.height / 3,
       width: screenSize.width,
       decoration: const BoxDecoration(
         color: ColorManager.backgroundColor,
@@ -107,13 +107,13 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                     }
                   },
                   color: ColorManager.backgroundColor,
-                  dimension: 40,
+                  dimension: 33,
                   child: const Icon(Icons.remove),
                 ),
                 CustomSquareButton(
                   onPressed: () {},
                   color: Colors.white,
-                  dimension: 40,
+                  dimension: 33,
                   child: Text(
                     quantity.toString(),
                     style: TextStyle(
@@ -123,7 +123,7 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                 ),
                 CustomSquareButton(
                   color: ColorManager.backgroundColor,
-                  dimension: 40,
+                  dimension: 33,
                   onPressed: () async {
                     setState(() {
                       quantity++;
@@ -156,19 +156,10 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                   },
                   child: const Icon(Icons.add),
                 ),
-              ],
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Padding(
-              padding: const EdgeInsets.only(top: 5),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Row(
-                    children: [
-                      CustomSimpleRoundedButton(
+                const SizedBox(
+                        width: 5,
+                      ),
+                CustomSimpleRoundedButton(
                         // onPressed: () async {
                         //   if (widget.product.id != null) {
                         //     await CloudFirestoreClass().removeProductFromCart(
@@ -204,24 +195,30 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                           text: appProvider.getfavProductList
                                   .contains(widget.product)
                               ? "Remove from Washlist"
-                              : 'Add to WashList'),
-                    ],
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(top: 5),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        "See more like this",
-                        style: TextStyle(
-                            color: ColorManager.activeCyanColor, fontSize: 12),
-                      ),
-                    ),
-                  )
-                ],
-              ),
+                              : 'Save for later'),
+              ],
             ),
           ),
+//           const Expanded(
+//   flex: 1,
+//   child: Column(
+//     mainAxisSize: MainAxisSize.min,
+//     children: [
+//       Align(
+//         alignment: Alignment.centerLeft,
+//         child: Text(
+//           "See more like this",
+//           style: TextStyle(
+//             color: ColorManager.activeCyanColor,
+//             fontSize: 12,
+//           ),
+//         ),
+//       ),
+//     ],
+//   ),
+// ),
+
+
         ],
       ),
     );

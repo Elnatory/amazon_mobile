@@ -42,25 +42,20 @@ class _CheckoutState extends State<Checkout> {
               ],
             ),
             const SizedBox(height: 50.0),
-            TextButton(
-              onPressed: () {},
-              style: TextButton.styleFrom(
-                backgroundColor: ColorManager.yellowColor,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                fixedSize:
-                    const Size(500, 50), // Set height as needed
-              ),
-              child: const Text(
-                "Checkout",
-                style: TextStyle(
-                  letterSpacing: 0.6,
-                  color: ColorManager.primary,
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
+            CustomMainButton(
+                          color: ColorManager.yellowColor,
+                          isLoading: false,
+                          onPressed: () async {
+                            
+                          },
+                          child: SizedBox(
+                            width: 100,
+                            child: Text(
+                              "Checkout",
+                              style: const TextStyle(color: Colors.black, fontSize: 20.0,),
+                            ),
+                          ),
+                        )
           ]),
         ),
       ),

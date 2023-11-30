@@ -26,7 +26,8 @@ class ProductInformationWidget extends StatelessWidget {
       height: 7,
     );
 
-    double totalCost = cost * (quantity ?? 1); // Replace '?? 1' with your default quantity
+    double totalCost =
+        cost * (quantity ?? 1); // Replace '?? 1' with your default quantity
 
     double percentageDiscount = (discount != null && discount! > 0)
         ? ((totalCost - discount!) / totalCost) * 100
@@ -55,35 +56,35 @@ class ProductInformationWidget extends StatelessWidget {
           Align(
             alignment: Alignment.centerLeft,
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 7),
+              padding: const EdgeInsets.symmetric(vertical: 0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   if (discount != null)
-                    RichText(
-                      text: TextSpan(
-                        children: [
-                          // Replace the comments with your discount representation
-                          // TextSpan(
-                          //   text: 'EGP ',
-                          //   style: TextStyle(
-                          //     color: Colors.red,
-                          //     fontSize: 12,
-                          //     decoration: TextDecoration.lineThrough,
-                          //   ),
-                          // ),
-                          // TextSpan(
-                          //   text: cost.toStringAsFixed(2),
-                          //   style: TextStyle(
-                          //     color: Colors.red,
-                          //     fontSize: 12,
-                          //     decoration: TextDecoration.lineThrough,
-                          //   ),
-                          // ),
-                        ],
-                      ),
-                    ),
-                  CostWidget(color: Colors.black, cost: totalCost), // Use total cost
+                    // RichText(
+                    //   text: TextSpan(
+                    //     children: [
+                    //       TextSpan(
+                    //         text: 'EGP ',
+                    //         style: TextStyle(
+                    //           color: Colors.red,
+                    //           fontSize: 12,
+                    //           decoration: TextDecoration.lineThrough,
+                    //         ),
+                    //       ),
+                    //       TextSpan(
+                    //         text: cost.toStringAsFixed(2),
+                    //         style: TextStyle(
+                    //           color: Colors.red,
+                    //           fontSize: 12,
+                    //           decoration: TextDecoration.lineThrough,
+                    //         ),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
+                    CostWidget(
+                        color: Colors.black, cost: totalCost), // Use total cost
                   if (discount != null)
                     Padding(
                       padding: const EdgeInsets.only(top: 4),
@@ -133,16 +134,6 @@ class ProductInformationWidget extends StatelessWidget {
             ),
           ),
           spaceThingy,
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              'Quantity: ${quantity ?? 1}',
-              style: const TextStyle(
-                color: Colors.grey,
-                fontSize: 14,
-              ),
-            ),
-          ),
         ],
       ),
     );
