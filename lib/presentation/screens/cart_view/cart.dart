@@ -152,16 +152,18 @@ class _CartState extends State<Cart> {
                           color: ColorManager.yellowColor,
                           isLoading: false,
                           onPressed: () async {
-                            await CloudFirestoreClass().buyAllItemsInCart();
-                            Utils().showSnackBar(
-                                context: context, content: "Done");
-                            Future.delayed(Duration(seconds: 2), () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Checkout()),
-                              );
-                            });
+                            // await CloudFirestoreClass().buyAllItemsInCart();
+                            // Utils().showSnackBar(
+                            //     context: context, content: "Done");
+                            // Future.delayed(Duration(seconds: 2), () {
+                            //   Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //         builder: (context) => Checkout(Product: product)),
+                            //   );
+                            // }
+                            // );
+
                           },
                           child: SizedBox(
                             width: 200,

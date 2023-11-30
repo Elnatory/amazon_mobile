@@ -37,18 +37,17 @@ class AppProvider with ChangeNotifier {
   // Total Price================================================================
 
   double totalPrice() {
-  double total = 0.0;
-  for (Product element in _cartProductList) {
-    double price = (element.priceAfterDiscount ?? element.price ?? 0).toDouble();
-    total += price * (element.qty ?? 0);
+    double total = 0.0;
+    for (Product element in _cartProductList) {
+      double price =
+          (element.priceAfterDiscount ?? element.price ?? 0).toDouble();
+      total += price * (element.qty ?? 0);
+    }
+    return total;
   }
-  return total;
-}
-
-
 
   // Update Qty=================================================================
-  
+
   void updateQty(Product product, int qty) {
     int index = _cartProductList.indexOf(product);
     _cartProductList[index].qty = qty;
@@ -65,5 +64,28 @@ class AppProvider with ChangeNotifier {
     return totalQuantity;
   }
 
+  // Clear Cart=================================================================
 
+  void clearCart() {
+    _cartProductList.clear();
+    notifyListeners();
+  }
+
+  // Clear Favourite============================================================
+
+  void clearFavourite() {
+    _favProductList.clear();
+    notifyListeners();
+  }
+
+  // Buy Products===============================================================
+
+  List<Product> _buyProductList = [];
+  
+  void addbuyProduct(Product product) {
+    _buyProductList.add(product);
+    notifyListeners();
+  }
+
+  List<Product> get getBuyProductList => _buyProductList;
 }

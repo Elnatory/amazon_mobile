@@ -299,9 +299,10 @@ class _ProductDetailsState extends State<ProductDetails> {
                   // await CloudFirestoreClass()
                   //     .addProductToOrders(product: widget.singleProduct);
                   // Get.to(FavScreen());
+                  Product product = widget.singleProduct.copyWith(qty: qty);
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => Checkout()),
+                    MaterialPageRoute(builder: (context) => Checkout(product:widget.singleProduct)),
                   );
                 },
                 style: ElevatedButton.styleFrom(

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import 'package:amazon_mobile/domain/model/category.dart' show Category;
@@ -85,11 +86,6 @@ class CloudFirestoreClass {
     }
   }
 
-
-
-
-
-
 // Future<void> addProductToCart({
 //   required Product product,
 //   required int newQuantity,
@@ -140,20 +136,13 @@ class CloudFirestoreClass {
 //   }
 // }
 
-Future<void> addProductToCart({required Product product}) async {
+  Future<void> addProductToCart({required Product product}) async {
     await firebaseFirestore
-    .collection('cart')
-    .doc(firebaseAuth.currentUser!.uid)
-    .collection('cart')
-    .add(product.toJson());
-}
-
-
-
-
-
-
-
+        .collection('cart')
+        .doc(firebaseAuth.currentUser!.uid)
+        .collection('cart')
+        .add(product.toJson());
+  }
 
 // Future<List<Product>> getCartProducts() async {
 //   try {
@@ -289,7 +278,6 @@ Future<void> addProductToCart({required Product product}) async {
     }
   }
 
-
 //   Future<void> updateProductInCart({required String productId, required int newQuantity}) async {
 //   await firebaseFirestore
 //       .collection('cart')
@@ -312,8 +300,6 @@ Future<void> addProductToCart({required Product product}) async {
 //       print('Error updating product quantity in cart: $e');
 //     }
 //   }
-
-
 
   Future buyAllItemsInCart() async {
     try {
@@ -355,5 +341,35 @@ Future<void> addProductToCart({required Product product}) async {
         .doc(firebaseAuth.currentUser!.uid)
         .collection('wishlist')
         .add(product.toJson());
+  }
+
+  Future<bool> uploadOrderProductFirebase(
+      List<Product> list, BuildContext context, String payment) async {
+    try {
+      // showLoaderDialog(context);
+      double totalPrice = 0.0;
+      for (var element in list) {
+        totalPrice +=
+            element.priceAfterDiscount ?? element.price ?? 0 * element.qty!;
+      }
+      DocumentReference documentReference = firebaseFirestore
+          .collection('orders')
+          .doc(firebaseAuth.currentUser!.uid)
+          .collection('orders')
+          .doc();
+
+      documentReference.set({
+        "products": list.map((e) => e.toJson()),
+        "status": "pending",
+        "totalPrice": totalPrice,
+        "payment": payment,
+      });
+      Navigator.of(context, rootNavigator: true).pop();
+      return true;
+    } catch (e) {
+      Navigator.of(context, rootNavigator: true).pop();
+      print(e);
+      return false;
+    }
   }
 }

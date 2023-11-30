@@ -194,7 +194,7 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                           },
                           text: appProvider.getfavProductList
                                   .contains(widget.product)
-                              ? "Remove from Washlist"
+                              ? "Remove from Wishlist"
                               : 'Save for later'),
               ],
             ),
