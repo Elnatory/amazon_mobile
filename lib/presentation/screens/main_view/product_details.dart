@@ -121,7 +121,9 @@ class _ProductDetailsState extends State<ProductDetails> {
                         });
                       },
                       icon: Icon(
-                        appProvider.getfavProductList.contains(widget.singleProduct) ?? false
+                        appProvider.getfavProductList
+                                    .contains(widget.singleProduct) ??
+                                false
                             ? Icons.favorite_rounded
                             : Icons.favorite_border_rounded,
                         color: widget.singleProduct.isFavourite ?? false
@@ -195,6 +197,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                           qty--;
                         });
                       }
+                      appProvider.increaseQuantity(qty);
                     },
                     padding: EdgeInsets.zero,
                     child: const CircleAvatar(
@@ -213,6 +216,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                       setState(() {
                         qty++;
                       });
+                        appProvider.increaseQuantity(qty);
                     },
                     padding: EdgeInsets.zero,
                     child: const CircleAvatar(
@@ -302,7 +306,9 @@ class _ProductDetailsState extends State<ProductDetails> {
                   Product product = widget.singleProduct.copyWith(qty: qty);
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => Checkout(product:widget.singleProduct)),
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            Checkout(product: product)),
                   );
                 },
                 style: ElevatedButton.styleFrom(

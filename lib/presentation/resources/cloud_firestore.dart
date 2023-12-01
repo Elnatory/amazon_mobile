@@ -1,10 +1,16 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:amazon_mobile/data/provider/app_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import 'package:amazon_mobile/domain/model/category.dart' show Category;
 import 'package:amazon_mobile/domain/model/products.dart' show Product;
+import 'package:amazon_mobile/domain/model/order.dart' show OrderModel;
+import 'package:provider/provider.dart';
 
 class CloudFirestoreClass {
   FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
@@ -344,32 +350,135 @@ class CloudFirestoreClass {
   }
 
   Future<bool> uploadOrderProductFirebase(
-      List<Product> list, BuildContext context, String payment) async {
+    List<Product> list,
+    AppProvider appProvider,
+    BuildContext context,
+    String payment,
+  ) async {
     try {
       // showLoaderDialog(context);
       double totalPrice = 0.0;
+
       for (var element in list) {
+        // Calculate the total quantity for each product
+        int totalQuantity = element.qty ?? 0;
+
         totalPrice +=
-            element.priceAfterDiscount ?? element.price ?? 0 * element.qty!;
+            (element.priceAfterDiscount ?? element.price!) * totalQuantity;
       }
+
       DocumentReference documentReference = firebaseFirestore
           .collection('orders')
           .doc(firebaseAuth.currentUser!.uid)
           .collection('orders')
           .doc();
 
-      documentReference.set({
-        "products": list.map((e) => e.toJson()),
+      DocumentReference admin = firebaseFirestore.collection('orders').doc();
+
+      admin.set({
+        "products": list.map((e) => e.toJson()).toList(),
         "status": "pending",
         "totalPrice": totalPrice,
         "payment": payment,
+        "id": admin.id,
       });
+
+      documentReference.set({
+        "products": list.map((e) => e.toJson()).toList(),
+        "status": "pending",
+        "totalPrice": totalPrice,
+        "payment": payment,
+        "id": documentReference.id,
+      });
+
       Navigator.of(context, rootNavigator: true).pop();
       return true;
     } catch (e) {
       Navigator.of(context, rootNavigator: true).pop();
       print(e);
       return false;
+    }
+  }
+
+// Future<bool> uploadOrderProductFirebase(
+//     List<Product>? list, // Accept nullable list
+//     AppProvider appProvider,
+//     BuildContext context,
+//     String payment,
+// ) async {
+//   try {
+//     // showLoaderDialog(context);
+//     if (list == null || list.isEmpty) {
+//       // Handle the case when the list is null or empty, e.g., show a message to the user.
+//       print("Error: The product list is null or empty!");
+//       return false;
+//     }
+
+//     double totalPrice = 0.0;
+//     int totalQuantity = appProvider.currentQuantity;
+//     for (var element in list) {
+//       totalPrice += (element.priceAfterDiscount != null
+//           ? element.priceAfterDiscount!
+//           : element.price!);
+//     }
+//     double total = totalPrice * totalQuantity;
+//     DocumentReference documentReference = firebaseFirestore
+//         .collection('orders')
+//         .doc(firebaseAuth.currentUser!.uid)
+//         .collection('orders')
+//         .doc();
+
+//     DocumentReference admin = firebaseFirestore.collection('orders').doc();
+
+//     admin.set({
+//       "products": list.map((e) => e.toJson()).toList(),
+//       "status": "pending",
+//       "totalPrice": total,
+//       "payment": payment,
+//       "id": admin.id,
+//     });
+//     documentReference.set({
+//       "products": list.map((e) => e.toJson()).toList(),
+//       "status": "pending",
+//       "totalPrice": total,
+//       "payment": payment,
+//       "id": documentReference.id,
+//     });
+//     Navigator.of(context, rootNavigator: true).pop();
+//     return true;
+//   } catch (e) {
+//     Navigator.of(context, rootNavigator: true).pop();
+//     print(e);
+//     return false;
+//   }
+// }
+
+  Future<List<OrderModel>> getUserOrders() async {
+    try {
+      QuerySnapshot<Map<String, dynamic>> querySnapshot =
+          await firebaseFirestore
+              .collection('orders')
+              .doc(firebaseAuth.currentUser!.uid)
+              .collection('orders')
+              .get();
+
+      List<OrderModel> orderList = querySnapshot.docs
+          .map((element) => OrderModel.fromJson(element.data()))
+          .toList();
+
+      return orderList;
+    } catch (e) {
+      return [];
+    }
+  }
+
+  void updateTokenFromFirebase() async {
+    String? token = await FirebaseMessaging.instance.getToken();
+    if (token != null) {
+      await firebaseFirestore
+          .collection('users')
+          .doc(firebaseAuth.currentUser!.uid)
+          .update({'notificationToken': token});
     }
   }
 }

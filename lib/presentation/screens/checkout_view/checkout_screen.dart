@@ -12,8 +12,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class Checkout extends StatefulWidget {
-  final Product product;
-  const Checkout({super.key, required this.product});
+  final Product? product;
+  final List<Product>? products;
+  const Checkout({super.key, this.product, this.products});
   set query(String query) {}
 
   @override
@@ -24,10 +25,12 @@ class _CheckoutState extends State<Checkout> {
   int groupValue = 1;
   @override
   Widget build(BuildContext context) {
+    print('Received Products: ${widget.products}');
     final CloudFirestoreClass cloudFirestore = CloudFirestoreClass();
     AppProvider appProvider = Provider.of<AppProvider>(
       context,
     );
+    print("Original List: ${appProvider.getBuyProductList}");
     return Scaffold(
       backgroundColor: ColorManager.backgroundColor,
       appBar: SearchBarWidget2(
@@ -123,26 +126,60 @@ class _CheckoutState extends State<Checkout> {
               color: ColorManager.yellowColor,
               isLoading: false,
               onPressed: () async {
-                appProvider.getBuyProductList.clear();
-                appProvider.addbuyProduct(widget.product);
+                // appProvider.getBuyProductList.clear();
 
-                bool value = await cloudFirestore.uploadOrderProductFirebase(
+                if (widget.product != null) {
+                  appProvider.addbuyProduct(widget.product!);
+                }
+
+                // bool value = await cloudFirestore.uploadOrderProductFirebase(
+                //     appProvider.getBuyProductList,
+                //     appProvider,
+                //     context,
+                //     groupValue == 1 ? "Cash on Delivery" : "Paid");
+                // appProvider.clearBuyProduct();
+                // if (value) {
+                //   Future.delayed(Duration(seconds: 2), () {
+                //     Navigator.push(
+                //       context,
+                //       MaterialPageRoute(builder: (context) => OrderScreen()),
+                //     );
+                //   });
+                //   appProvider.clearCart();
+                //   appProvider.clearFavourite();
+                //   // appProvider.resetQuantity();
+                //   Navigator.push(
+                //     context,
+                //     MaterialPageRoute(builder: (context) => OrderScreen()),
+                //   );
+                // }
+
+                if (appProvider.getBuyProductList.isNotEmpty) {
+                  bool value = await cloudFirestore.uploadOrderProductFirebase(
                     appProvider.getBuyProductList,
+                    appProvider,
                     context,
-                    groupValue == 1 ? "Cash on Delivery" : "Paid");
-                if (value) {
-                  Future.delayed(Duration(seconds: 2), () {
+                    groupValue == 1 ? "Cash on Delivery" : "Paid",
+                  );
+
+                  if (value) {
+                    print("Navigation Start");
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => OrderScreen()),
-                    );
-                  });
-                  appProvider.clearCart();
-                  appProvider.clearFavourite();
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => OrderScreen()),
-                  );
+                    ).then((result) {
+                      print("Navigation Completed with result: $result");
+                    }).catchError((error) {
+                      print("Navigation Error: $error");
+                    });
+                    print("Navigation End");
+                    appProvider.clearBuyProduct();
+                    appProvider.clearCart();
+                    appProvider.clearFavourite();
+                    // appProvider.resetQuantity();
+                  }
+                } else {
+                  print("Error: The product list is empty!");
                 }
               },
               child: const SizedBox(

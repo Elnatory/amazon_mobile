@@ -153,17 +153,38 @@ class _CartState extends State<Cart> {
                           isLoading: false,
                           onPressed: () async {
                             // await CloudFirestoreClass().buyAllItemsInCart();
-                            // Utils().showSnackBar(
-                            //     context: context, content: "Done");
-                            // Future.delayed(Duration(seconds: 2), () {
-                            //   Navigator.push(
-                            //     context,
-                            //     MaterialPageRoute(
-                            //         builder: (context) => Checkout(Product: product)),
-                            //   );
-                            // }
-                            // );
+                            //     Utils().showSnackBar(
+                            //         context: context, content: "Done");
+                            //     Future.delayed(Duration(seconds: 2), () {
+                            //       Navigator.push(
+                            //         context,
+                            //         MaterialPageRoute(
+                            // builder: (context) =>
+                            //     Checkout(product: widget.singleProduct)),
+                            //       );
+                            //     }
+                            //     );
 
+                            // appProvider.clearBuyProduct();
+                            ////////////////////////////////////////////////////
+                            appProvider.addbuyProductCartList();
+                            // appProvider.clearCartList();
+
+                            print(
+                                'Original List: ${appProvider.getCartProductList}');
+                            print(
+                                'Products List: ${appProvider.getBuyProductList}');
+
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Checkout(
+                                  products: appProvider.getBuyProductList,
+                                ),
+                              ),
+                            );
+
+                            // appProvider.clearBuyProduct();
                           },
                           child: SizedBox(
                             width: 200,

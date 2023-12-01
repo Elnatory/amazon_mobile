@@ -81,11 +81,67 @@ class AppProvider with ChangeNotifier {
   // Buy Products===============================================================
 
   List<Product> _buyProductList = [];
-  
-  void addbuyProduct(Product product) {
+
+void addbuyProduct(Product product) {
+  if (product != null) {
+    print('Adding product: $product');
     _buyProductList.add(product);
     notifyListeners();
   }
+}
 
-  List<Product> get getBuyProductList => _buyProductList;
+void addbuyProductCartList() {
+  print('Adding products from cart to buy product list: $_cartProductList');
+  
+  // Remove null entries from _cartProductList before adding to _buyProductList
+  _buyProductList.addAll(_cartProductList.where((product) => product != null));
+  
+  print('Updated Buy Product List: $_buyProductList');
+  notifyListeners();
+}
+
+void clearCartList() {
+  _cartProductList.clear();
+  notifyListeners();
+}
+
+void clearBuyProduct() {
+  _buyProductList.clear();
+  notifyListeners();
+}
+
+List<Product> get getBuyProductList {
+  print('Returning Buy Product List: $_buyProductList');
+  return _buyProductList;
+}
+
+
+  // int _currentQuantity = 1;
+
+  // int get currentQuantity => _currentQuantity;
+
+  // void increaseQuantity() {
+  //   _currentQuantity++;
+  //   print('Current Quantity: $_currentQuantity');
+  //   notifyListeners();
+  // }
+
+  // void resetQuantity() {
+  //   _currentQuantity = 1;
+  //   notifyListeners();
+  // }
+
+
+  int _currentQuantity = 1;
+
+  int get currentQuantity => _currentQuantity;
+
+  void increaseQuantity(int customQuantity) {
+    _currentQuantity = customQuantity;
+    notifyListeners();
+}
+
+
+
+
 }
