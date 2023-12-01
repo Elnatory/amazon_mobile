@@ -8,7 +8,10 @@ import 'package:amazon_mobile/presentation/resources/utils.dart';
 import 'package:amazon_mobile/presentation/screens/cart_view/cart_boxes.dart';
 import 'package:amazon_mobile/presentation/screens/cart_view/cart_subtotal.dart';
 import 'package:amazon_mobile/presentation/screens/checkout_view/checkout_screen.dart';
+import 'package:amazon_mobile/presentation/screens/favourite_view/fav.dart';
 import 'package:amazon_mobile/presentation/widgets/main_button.dart';
+import 'package:amazon_mobile/presentation/widgets/product_widget.dart';
+import 'package:amazon_mobile/presentation/widgets/products_listview.dart';
 import 'package:amazon_mobile/presentation/widgets/user_details.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -25,10 +28,16 @@ class Cart extends StatefulWidget {
 class _CartState extends State<Cart> {
   @override
   Widget build(BuildContext context) {
+     final CloudFirestoreClass cloudFirestore = CloudFirestoreClass();
+
+  CloudFirestoreClass getCloudFirestore() {
+    return cloudFirestore;
+  }
     AppProvider appProvider = Provider.of<AppProvider>(
       context,
     );
     return Scaffold(
+      backgroundColor: Colors.white,
       //==========================================================appBar: AppBar
       appBar: SearchBarWidget(
         hasBackButton: false,
@@ -199,31 +208,79 @@ class _CartState extends State<Cart> {
                     },
                   ),
                 ),
+                
                 Expanded(
-                  child: ListView.builder(
-                    itemCount: appProvider.getCartProductList.length,
-                    itemBuilder: (context, index) {
-                      Product model = appProvider.getCartProductList[index];
-                      return CartItemWidget(product: model);
-                    },
-                  ),
-                  // child: StreamBuilder(
-                  //   stream: CloudFirestoreClass().getCartProductsStream(),
-                  //   builder: (context, AsyncSnapshot<List<Product>> snapshot) {
-                  //     if (snapshot.connectionState == ConnectionState.waiting) {
-                  //       return Container();
-                  //     } else {
-                  //       return ListView.builder(
-                  //         itemCount: snapshot.data!.length,
-                  //         itemBuilder: (context, index) {
-                  //           Product model = snapshot.data![index];
-                  //           return CartItemWidget(product: model);
-                  //         },
-                  //       );
-                  //     }
-                  //   },
-                  // ),
+  child: appProvider.getCartProductList.isEmpty
+    ? Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(
+            height: 80,
+          ),
+          Text(
+            'Your Cart is Empty!',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(height: 8),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => FavScreen(),
                 ),
+              );
+            },
+            child: Text(
+              'Go to Wishlist',
+              style: TextStyle(
+                color: Colors.blue,
+                fontSize: 16,
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 100,
+          ),
+          FutureBuilder<List<Product>>(
+            future: getCloudFirestore().getProducts(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return CircularProgressIndicator();
+              } else if (snapshot.hasError) {
+                return Text('Error: ${snapshot.error}');
+              } else {
+                List<Product> products = snapshot.data!;
+                List<Widget> productWidgets = products.map((product) {
+                  return ProductWidget(product: product);
+                }).toList();
+
+                return Transform.translate(
+                  offset: const Offset(0, -40),
+                  child: ProductsShowcaseListView(
+                    title: 'Shop by Products',
+                    products: products,
+                  ),
+                );
+              }
+            },
+          ),
+        ],
+      ),
+    )
+    : ListView.builder(
+      itemCount: appProvider.getCartProductList.length,
+      itemBuilder: (context, index) {
+        Product model = appProvider.getCartProductList[index];
+        return CartItemWidget(product: model);
+      },
+    ),
+),
+
               ],
             ),
             const UserDetailsBar(

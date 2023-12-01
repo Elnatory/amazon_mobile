@@ -28,6 +28,7 @@ class _HomeState extends State<Home> {
 
   ScrollController controller = ScrollController();
   double offset = 0;
+  late Future<List<Product>> featuredProducts;
 
   @override
   void initState() {
@@ -37,6 +38,9 @@ class _HomeState extends State<Home> {
         offset = controller.position.pixels;
       });
     });
+
+    // Initialize the future in initState
+    featuredProducts = getCloudFirestore().getProducts();
   }
 
   @override
@@ -65,8 +69,9 @@ class _HomeState extends State<Home> {
           ),
           const CategoriesList(),
           const AdBannerWidget(),
+          // Use the FutureBuilder here
           FutureBuilder<List<Product>>(
-            future: getCloudFirestore().getProducts(),
+            future: featuredProducts,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const CircularProgressIndicator();
@@ -74,10 +79,6 @@ class _HomeState extends State<Home> {
                 return Text('Error: ${snapshot.error}');
               } else {
                 List<Product> products = snapshot.data!;
-                List<Widget> productWidgets = products.map((product) {
-                  return ProductWidget(product: product);
-                }).toList();
-
                 return Transform.translate(
                   offset: const Offset(0, -40),
                   child: ProductsShowcaseListView(
@@ -87,6 +88,47 @@ class _HomeState extends State<Home> {
                 );
               }
             },
+          ),
+
+          // Inside the empty Column
+          Column(
+            children: [
+              SizedBox(height: 16),
+              Text(
+                'Featured Products',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(height: 16),
+              // Use the FutureBuilder here
+              FutureBuilder<List<Product>>(
+                future: featuredProducts,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return CircularProgressIndicator();
+                  } else if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  } else {
+                    List<Product> products = snapshot.data!;
+                    return GridView.builder(
+                      shrinkWrap: true,
+                      physics: BouncingScrollPhysics(),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 8.0,
+                        mainAxisSpacing: 8.0,
+                      ),
+                      itemCount: products.length,
+                      itemBuilder: (context, index) {
+                        return ProductWidget(product: products[index]);
+                      },
+                    );
+                  }
+                },
+              ),
+            ],
           ),
         ],
       ),

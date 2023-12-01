@@ -42,9 +42,31 @@ class _CheckoutState extends State<Checkout> {
         hasBackButton: true,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(12.0),
+        padding: const EdgeInsets.all(0.0),
         child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: lightBackgroundaGradient,
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+              ),
+            ),
+            width: MediaQuery.of(context)
+                .size
+                .width, // Set the width to the screen width
+            padding: const EdgeInsets.all(4.0),
+            child: Text(
+              'Checkout Page',
+              style: TextStyle(
+                color: Colors.grey[900],
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
             const SizedBox(
               height: 36.0,
             ),
@@ -53,7 +75,7 @@ class _CheckoutState extends State<Checkout> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12.0),
                 border: Border.all(
-                  color: Colors.orange,
+                  color: ColorManager.activeCyanColor,
                   width: 3.0,
                 ),
               ),
@@ -69,7 +91,7 @@ class _CheckoutState extends State<Checkout> {
                       });
                     },
                   ),
-                  Icon(Icons.money),
+                  Icon(Icons.attach_money_sharp),
                   const SizedBox(
                     width: 12.0,
                   ),
@@ -84,14 +106,14 @@ class _CheckoutState extends State<Checkout> {
               ),
             ),
             const SizedBox(
-              height: 24.0,
+              height: 5.0,
             ),
             Container(
               height: 80,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12.0),
                 border: Border.all(
-                  color: Colors.orange,
+                  color: ColorManager.activeCyanColor,
                   width: 3.0,
                 ),
               ),

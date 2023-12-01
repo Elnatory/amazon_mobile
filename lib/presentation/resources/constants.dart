@@ -3,6 +3,8 @@ import 'package:amazon_mobile/presentation/screens/cart_view/cart.dart';
 import 'package:amazon_mobile/presentation/screens/main_view/home_screen.dart';
 import 'package:amazon_mobile/presentation/screens/more_view/more.dart';
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 const double AppBarHeight = 80;
 
@@ -67,7 +69,6 @@ const List<String> adItemNames = [
   "Pay Bills"
 ];
 
-
 List<String> keysOfRating = [
   "Very bad",
   "Poor",
@@ -76,5 +77,20 @@ List<String> keysOfRating = [
   "Excellent"
 ];
 
+class ApiContest {
+  static const String baseUrl = 'http://accept.paymob.com/api';
+  static const String getAuthToken = '/auth/tokens';
+  static const String getPaymentApiKey =
+      'ZXlKaGJHY2lPaUpJVXpVeE1pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SmpiR0Z6Y3lJNklrMWxjbU5vWVc1MElpd2ljSEp2Wm1sc1pWOXdheUk2T1RRek56YzRMQ0p1WVcxbElqb2lhVzVwZEdsaGJDSjkuTWZXd3FuUUFWV3AxX3o3VnRHdk9IZlpydDR0aFB5SUdMMk0zcTN1UFFnOTgtWnRnaFpGUmJ4WGx2aHU3RTU4V2JZU2VlTURGcDdHcF9JUE9VM1VkbWc=';
+  static const String getOrderId = '/ecommerce/orders';
+  static const String getPaymentId = '/acceptance/payment_keys';
+  static const String getRefCode = '/acceptance/payments/pay';
+  static String paymentFirstToken = '';
+  static String paymentOrderId = '';
+  static String finalToken = '';
+  static String refCode = '';
 
 
+  static String integrationIdCard = '4380682';
+  static String integrationIdKiosk = '';
+}

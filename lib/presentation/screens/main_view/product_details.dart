@@ -9,6 +9,7 @@ import 'package:amazon_mobile/presentation/screens/favourite_view/fav.dart';
 import 'package:amazon_mobile/presentation/widgets/product_widget.dart';
 import 'package:amazon_mobile/presentation/widgets/products_listview.dart';
 import 'package:amazon_mobile/presentation/widgets/rating_stars.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -38,6 +39,11 @@ class _ProductDetailsState extends State<ProductDetails> {
   int qty = 1;
   FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  void _showSnackBar(BuildContext context, String message) {
+  final snackBar = SnackBar(content: Text(message));
+  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+}
+
   @override
   Widget build(BuildContext context) {
     AppProvider appProvider = Provider.of<AppProvider>(
@@ -65,21 +71,43 @@ class _ProductDetailsState extends State<ProductDetails> {
         child: Padding(
           padding: const EdgeInsets.all(12.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    '${widget.singleProduct.ratingsAverage ?? 0.0}',
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  Row(
+                    children: [
+                      Text(
+                        '${widget.singleProduct.ratingsAverage ?? 0.0}',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(width: 8.0),
+                      Row(
+                        children: [
+                          RatingStars(
+                            rating: widget.singleProduct.ratingsAverage ?? 0.0,
+                            size: 25.0,
+                          ),
+                          const SizedBox(width: 8.0),
+                        ],
+                      ),
+                    ],
                   ),
-                  const SizedBox(width: 8.0),
-                  RatingStars(
-                    rating: widget.singleProduct.ratingsAverage ?? 0.0,
-                    size: 25.0,
+                  IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => FavScreen()),
+                      );
+                    },
+                    icon: Icon(
+                      Icons.local_grocery_store_sharp,
+                      color: Colors.grey,
+                    ),
                   ),
                 ],
               ),
@@ -95,11 +123,19 @@ class _ProductDetailsState extends State<ProductDetails> {
               Stack(
                 alignment: Alignment.bottomLeft,
                 children: [
-                  Image.network(
-                    widget.singleProduct.imageCover ?? '',
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                    height: 400,
+                  CarouselSlider(
+                    options: CarouselOptions(
+                      height: 400,
+                      enlargeCenterPage: true,
+                    ),
+                    items: widget.singleProduct.images
+                            ?.map((image) => Image.network(
+                                  image,
+                                  fit: BoxFit.cover,
+                                  width: double.infinity,
+                                ))
+                            .toList() ??
+                        [],
                   ),
                   Positioned(
                     left: 4.0,
@@ -115,8 +151,10 @@ class _ProductDetailsState extends State<ProductDetails> {
 
                           if (widget.singleProduct.isFavourite!) {
                             appProvider.addFavProduct(widget.singleProduct);
+                            _showSnackBar(context, 'Added to Favorites');
                           } else {
                             appProvider.removeFavProduct(widget.singleProduct);
+                            _showSnackBar(context, 'Removed from Favorites');
                           }
                         });
                       },
@@ -216,7 +254,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                       setState(() {
                         qty++;
                       });
-                        appProvider.increaseQuantity(qty);
+                      appProvider.increaseQuantity(qty);
                     },
                     padding: EdgeInsets.zero,
                     child: const CircleAvatar(
@@ -256,6 +294,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                   },
                 ),
               ),
+              
             ],
           ),
         ),
@@ -307,8 +346,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) =>
-                            Checkout(product: product)),
+                        builder: (context) => Checkout(product: product)),
                   );
                 },
                 style: ElevatedButton.styleFrom(

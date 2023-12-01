@@ -1,4 +1,5 @@
 import 'package:amazon_mobile/app/app.dart';
+import 'package:amazon_mobile/data/network/dio_helper.dart';
 import 'package:amazon_mobile/data/provider/app_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -11,6 +12,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await DioHelper.initDio();
   await GetStorage.init();
   runApp(
     ChangeNotifierProvider(

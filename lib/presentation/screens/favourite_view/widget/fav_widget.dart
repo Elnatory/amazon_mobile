@@ -34,11 +34,16 @@ class _FavItemWidgetState extends State<FavItemWidget> {
   int qty = 1;
   @override
   Widget build(BuildContext context) {
+    void _showSnackBar(BuildContext context, String message) {
+      final snackBar = SnackBar(content: Text(message));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+
     Provider.of<AppProvider>(context);
     // final productCart =context.watch<userProvider>().user.cart[widget.index];
     Size screenSize = Utils().getScreenSize();
     return Container(
-      height: screenSize.height / 2,
+      height: screenSize.height / 3,
       width: screenSize.width,
       decoration: const BoxDecoration(
         color: ColorManager.backgroundColor,
@@ -49,14 +54,14 @@ class _FavItemWidgetState extends State<FavItemWidget> {
       child: Column(
         children: [
           Expanded(
-            flex: 3,
+            flex: 2,
             child: GestureDetector(
               onTap: () {},
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   SizedBox(
-                    width: screenSize.width / 3,
+                    width: screenSize.width / 2,
                     child: Align(
                       alignment: Alignment.topCenter,
                       child: Center(
@@ -64,16 +69,21 @@ class _FavItemWidgetState extends State<FavItemWidget> {
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(9.0),
-                    child: ProductInformationWidget(
-                      productName: widget.product.title ?? '',
-                      cost: calculateTotalCost(),
-                      discount:
-                          widget.product.priceAfterDiscount?.toDouble() ?? 0.0,
-                      sellerName: widget.product.brandName ?? '',
+                  const SizedBox(
+                      width: 8.0), // Add some space between image and title
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(0.0),
+                      child: ProductInformationWidget(
+                        productName: widget.product.title ?? '',
+                        cost: calculateTotalCost(),
+                        discount:
+                            widget.product.priceAfterDiscount?.toDouble() ??
+                                0.0,
+                        sellerName: widget.product.brandName ?? '',
+                      ),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
@@ -81,7 +91,7 @@ class _FavItemWidgetState extends State<FavItemWidget> {
           Expanded(
             flex: 1,
             child: Padding(
-              padding: const EdgeInsets.only(top: 5),
+              padding: const EdgeInsets.all( 10),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -93,7 +103,7 @@ class _FavItemWidgetState extends State<FavItemWidget> {
                               Provider.of<AppProvider>(context, listen: false);
                           appProvider.removeFavProduct(widget.product);
                           print('Delete');
-                          // showMessage("Product deleted from favourite");
+                          _showSnackBar(context, 'Deleted from Favorites');
                         },
                         text: "Delete",
                       ),
@@ -101,30 +111,20 @@ class _FavItemWidgetState extends State<FavItemWidget> {
                         width: 5,
                       ),
                       CustomSimpleRoundedButton(
-                          onPressed: () {
-                            AppProvider appProvider = Provider.of<AppProvider>(
-                                context,
-                                listen: false);
-                            print('Before addCartProduct');
-                            Product product = widget.product.copyWith(qty: qty);
-                            appProvider.addCartProduct(product);
-                            appProvider.removeFavProduct(widget.product);
-                            print('After addCartProduct');
-                          },
-                          text: "Add To Cart"),
+                        onPressed: () {
+                          AppProvider appProvider =
+                              Provider.of<AppProvider>(context, listen: false);
+                          print('Before addCartProduct');
+                          Product product = widget.product.copyWith(qty: qty);
+                          appProvider.addCartProduct(product);
+                          _showSnackBar(context, 'Added to Cart');
+                          appProvider.removeFavProduct(widget.product);
+                          print('After addCartProduct');
+                        },
+                        text: "Add To Cart",
+                      ),
                     ],
                   ),
-                  const Padding(
-                    padding: EdgeInsets.only(top: 5),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        "See more like this",
-                        style: TextStyle(
-                            color: ColorManager.activeCyanColor, fontSize: 12),
-                      ),
-                    ),
-                  )
                 ],
               ),
             ),

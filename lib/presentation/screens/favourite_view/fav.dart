@@ -49,14 +49,42 @@ class _FavScreenState extends State<FavScreen> {
                 ),
               ),
             )
-          : ListView.builder(
-              itemCount: appProvider.getfavProductList.length,
-              padding: const EdgeInsets.all(12),
-              itemBuilder: (context, index) {
-                return FavItemWidget(
-                  product: appProvider.getfavProductList[index],
-                );
-              },
+          : Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: lightBackgroundaGradient,
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+              ),
+            ),
+            width: MediaQuery.of(context)
+                .size
+                .width,
+            padding: const EdgeInsets.all(4.0),
+            child: Text(
+              'Saved Items',
+              style: TextStyle(
+                color: Colors.grey[900],
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: appProvider.getfavProductList.length,
+                    padding: const EdgeInsets.all(12),
+                    itemBuilder: (context, index) {
+                      return FavItemWidget(
+                        product: appProvider.getfavProductList[index],
+                      );
+                    },
+                  ),
+                ),
+              ],
             ),
     );
   }
