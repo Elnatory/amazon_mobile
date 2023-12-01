@@ -45,6 +45,8 @@ dependencies:
   get_storage: ^2.1.1
   cloud_firestore: ^4.13.2
   intl: ^0.18.1
+  # flutter_svg: ^0.22.0
+  # flutter_line_awesome_icons: ^2.0.0
 
 dev_dependencies:
   flutter_test:

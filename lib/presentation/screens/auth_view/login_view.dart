@@ -1,5 +1,6 @@
 import 'package:amazon_mobile/presentation/layout/screen_layout.dart';
 import 'package:amazon_mobile/presentation/screens/auth_view/phone.dart';
+import 'package:amazon_mobile/presentation/screens/user_profile/profile.dart';
 import 'package:amazon_mobile/presentation/widgets/main_button.dart';
 import 'package:amazon_mobile/presentation/widgets/text_field_widget.dart';
 import 'package:amazon_mobile/presentation/resources/color_manager.dart';
@@ -206,7 +207,7 @@ class _LoginState extends State<Login> {
                                     if (userCredential.user != null) {
                                       Navigator.pushReplacement(context,
                                           MaterialPageRoute(builder: (context)=> 
-                                         ScreenLayout(),),
+                                         ProfileScreen(),),
                                       );
                                       box.write('uid', auth.currentUser!.uid);
                                       Get.snackbar(

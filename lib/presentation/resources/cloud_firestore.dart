@@ -35,6 +35,7 @@ class CloudFirestoreClass {
         return {
           "name": userData['name'],
           "email": userData['email'],
+          "createdAt":userData['createdAt'],
         };
       } else {
         return {

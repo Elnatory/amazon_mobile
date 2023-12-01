@@ -3,6 +3,7 @@ import 'package:amazon_mobile/presentation/resources/color_manager.dart';
 import 'package:amazon_mobile/presentation/resources/theme_manager.dart';
 import 'package:amazon_mobile/presentation/screens/auth_view/login_view.dart';
 import 'package:amazon_mobile/presentation/screens/auth_view/reg_view.dart';
+import 'package:amazon_mobile/presentation/screens/user_profile/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:flutter/services.dart';

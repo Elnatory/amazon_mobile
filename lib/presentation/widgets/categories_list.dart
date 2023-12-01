@@ -1,6 +1,6 @@
 import 'package:amazon_mobile/domain/model/category.dart';
 import 'package:amazon_mobile/presentation/resources/cloud_firestore.dart';
-import 'package:amazon_mobile/presentation/resources/color_manager.dart';
+// import 'package:amazon_mobile/presentation/resources/color_manager.dart';
 import 'package:amazon_mobile/presentation/resources/constants.dart';
 import 'package:flutter/material.dart';
 
