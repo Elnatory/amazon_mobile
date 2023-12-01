@@ -1,3 +1,44 @@
+class OrderModel {
+  final String? id;
+  final String payment;
+  final List<Product> products;
+  final String status;
+  final double totalPrice;
+
+  OrderModel({
+    required this.id,
+    required this.payment,
+    required this.products,
+    required this.status,
+    required this.totalPrice,
+  });
+
+  factory OrderModel.fromJson(Map<String, dynamic> json) {
+    List<dynamic> productsMap = json['products'];
+    return OrderModel(
+      id: json['id'] ?? '',
+      payment: json['payment'] ?? '',
+      products: productsMap.map((e) => Product.fromJson(e))
+              .toList() ??
+          [],
+      status: json['status'] ?? '',
+      totalPrice: (json['totalPrice'] as num?)?.toDouble() ?? 0.0,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'payment': payment,
+      'products': products.map((product) => product.toJson()).toList(),
+      'status': status,
+      'totalPrice': totalPrice,
+    };
+  }
+}
+
+
+
 class Product {
   final String? createdAt;
   final String? description;

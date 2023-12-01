@@ -1,6 +1,9 @@
 import 'package:amazon_mobile/presentation/resources/cloud_firestore.dart';
 import 'package:amazon_mobile/presentation/resources/color_manager.dart';
 import 'package:amazon_mobile/presentation/resources/constants.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
 class ScreenLayout extends StatefulWidget {
@@ -26,11 +29,23 @@ class _ScreenLayoutState extends State<ScreenLayout> {
       currentPage = page;
     });
   }
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+  void updateTokenFromFirebase() async {
+    String? token = await FirebaseMessaging.instance.getToken();
+    if (token != null) {
+      await firebaseFirestore
+          .collection('users')
+          .doc(firebaseAuth.currentUser!.uid)
+          .update({'notificationToken': token});
+    }
+  }
 
   @override
   void initState() {
     super.initState();
     CloudFirestoreClass().getNameAndEmail();
+    updateTokenFromFirebase();
   }
 
   @override

@@ -5,7 +5,6 @@ import 'package:amazon_mobile/presentation/widgets/text_field_widget.dart';
 import 'package:amazon_mobile/presentation/resources/color_manager.dart';
 import 'package:amazon_mobile/presentation/resources/constants.dart';
 import 'package:amazon_mobile/presentation/resources/utils.dart';
-import 'package:amazon_mobile/presentation/screens/main_view/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:amazon_mobile/presentation/screens/auth_view/reg_view.dart';
@@ -113,12 +112,6 @@ class _LoginState extends State<Login> {
                         Align(
                           alignment: Alignment.center,
                           child: CustomMainButton(
-                            child: const Text(
-                              "Sign In",
-                              style: TextStyle(
-                                  letterSpacing: 0.6,
-                                  color: ColorManager.primary),
-                            ),
                             color: ColorManager.yellowColor,
                             isLoading: isLoading,
                             onPressed: () async {
@@ -127,36 +120,34 @@ class _LoginState extends State<Login> {
                                     .signInWithEmailAndPassword(
                                         email: emailController.text,
                                         password: passwordController.text);
-                                if (auth.currentUser!.uid != null) {
-                                  Navigator.pushReplacement(context,
-                                      MaterialPageRoute(builder: (context) {
-                                    return ScreenLayout();
-                                  }));
-                                  box.write('uid', auth.currentUser!.uid);
-                                  Get.snackbar(
+                                Navigator.pushReplacement(context,
+                                    MaterialPageRoute(builder: (context) {
+                                  return const ScreenLayout();
+                                }));
+                                box.write('uid', auth.currentUser!.uid);
+                                Get.snackbar(
+                                  'Welcome',
+                                  'Muhammad Omar',
+                                  titleText: const Text(
                                     'Welcome',
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  messageText: const Text(
                                     'Muhammad Omar',
-                                    titleText: const Text(
-                                      'Welcome',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                      ),
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      color: Colors.black,
                                     ),
-                                    messageText: const Text(
-                                      'Muhammad Omar',
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                  );
+                                  ),
+                                );
 
-                                  // Get.to(MainNav());
-                                  print(auth.currentUser!.uid);
-                                }
-                              } on FirebaseAuthException catch (e) {
+                                // Get.to(MainNav());
+                                print(auth.currentUser!.uid);
+                                                            } on FirebaseAuthException catch (e) {
                                 if (e.code == 'user-not-found') {
                                   print('No user found for that email.');
                                 } else if (e.code == 'wrong-password') {
@@ -165,6 +156,12 @@ class _LoginState extends State<Login> {
                                 }
                               }
                             },
+                            child: const Text(
+                              "Sign In",
+                              style: TextStyle(
+                                  letterSpacing: 0.6,
+                                  color: ColorManager.primary),
+                            ),
                           ),
                         ),
                         // =========================End SignIn with Email and Password=======================
@@ -175,14 +172,14 @@ class _LoginState extends State<Login> {
                             TextButton(
                               onPressed: () async {
                                 try {
-                                  GoogleAuthProvider _google =
+                                  GoogleAuthProvider google =
                                       GoogleAuthProvider();
-                                  await auth.signInWithProvider(_google);
+                                  await auth.signInWithProvider(google);
 
                                   if (auth.currentUser != null) {
                                     Navigator.pushReplacement(context,
                                         MaterialPageRoute(builder: (context) {
-                                      return  ScreenLayout();
+                                      return  const ScreenLayout();
                                     }));
                                     box.write('uid', auth.currentUser!.uid);
 
@@ -214,8 +211,7 @@ class _LoginState extends State<Login> {
                                 }
                               },
                               style: TextButton.styleFrom(
-                                primary: Colors.white,
-                                onSurface: Colors.black,
+                                foregroundColor: Colors.white, disabledForegroundColor: Colors.black.withOpacity(0.38),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20),
                                 ),
@@ -243,12 +239,11 @@ class _LoginState extends State<Login> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => PhoneNumberForm()),
+                                      builder: (context) => const PhoneNumberForm()),
                                 );
                               },
                               style: TextButton.styleFrom(
-                                primary: Colors.white,
-                                onSurface: Colors.black,
+                                foregroundColor: Colors.white, disabledForegroundColor: Colors.black.withOpacity(0.38),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20),
                                 ),
@@ -298,13 +293,6 @@ class _LoginState extends State<Login> {
                     ],
                   ),
                   CustomMainButton(
-                      child: const Text(
-                        "Create an Amazon Account",
-                        style: TextStyle(
-                          letterSpacing: 0.6,
-                          color: Colors.black,
-                        ),
-                      ),
                       color: Colors.grey[400]!,
                       isLoading: false,
                       onPressed: () {
@@ -312,7 +300,14 @@ class _LoginState extends State<Login> {
                             MaterialPageRoute(builder: (context) {
                           return const Registeration();
                         }));
-                      })
+                      },
+                      child: const Text(
+                        "Create an Amazon Account",
+                        style: TextStyle(
+                          letterSpacing: 0.6,
+                          color: Colors.black,
+                        ),
+                      ))
                 ],
               ),
             ),
