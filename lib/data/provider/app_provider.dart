@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class AppProvider with ChangeNotifier {
   // Cart Work==================================================================
 
-  List<Product> _cartProductList = [];
+  final List<Product> _cartProductList = [];
 
   void addCartProduct(Product product) {
     _cartProductList.add(product);
@@ -20,7 +20,7 @@ class AppProvider with ChangeNotifier {
 
   // Favourite==================================================================
 
-  List<Product> _favProductList = [];
+  final List<Product> _favProductList = [];
 
   void addFavProduct(Product product) {
     _favProductList.add(product);
@@ -80,14 +80,12 @@ class AppProvider with ChangeNotifier {
 
   // Buy Products===============================================================
 
-  List<Product> _buyProductList = [];
+  final List<Product> _buyProductList = [];
 
 void addbuyProduct(Product product) {
-  if (product != null) {
-    print('Adding product: $product');
-    _buyProductList.add(product);
-    notifyListeners();
-  }
+  print('Adding product: $product');
+  _buyProductList.add(product);
+  notifyListeners();
 }
 
 void addbuyProductCartList() {

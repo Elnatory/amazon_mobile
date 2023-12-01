@@ -18,7 +18,7 @@ class _CartProductBoxState extends State<CartProductBox> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: Container(
-          decoration: BoxDecoration(),
+          decoration: const BoxDecoration(),
           child: Column(
             children: [
               Row(
@@ -34,7 +34,7 @@ class _CartProductBoxState extends State<CartProductBox> {
               ),
               Container(
                 child:
-                    Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                    const Row(mainAxisAlignment: MainAxisAlignment.start, children: [
                   Image(
                       height: 100,
                       width: 100,
@@ -49,13 +49,13 @@ class _CartProductBoxState extends State<CartProductBox> {
                   ),
                 ]),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 8,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Container(
+                  SizedBox(
                     height: 35,
                     child: Row(
                       children: [
@@ -73,7 +73,7 @@ class _CartProductBoxState extends State<CartProductBox> {
                                 ),
                                 child: IconButton(
                                   onPressed: () {},
-                                  icon: Icon(Icons.remove),
+                                  icon: const Icon(Icons.remove),
                                 ),
                               ),
                               SizedBox(
@@ -94,12 +94,12 @@ class _CartProductBoxState extends State<CartProductBox> {
                                   ),
                                   child: IconButton(
                                     onPressed: () {},
-                                    icon: Icon(Icons.add),
+                                    icon: const Icon(Icons.add),
                                   ))
                             ],
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 8,
                         ),
                         TextButton(

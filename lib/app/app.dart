@@ -1,5 +1,4 @@
 import 'package:amazon_mobile/data/provider/app_provider.dart';
-import 'package:amazon_mobile/presentation/layout/screen_layout.dart';
 import 'package:amazon_mobile/presentation/resources/color_manager.dart';
 import 'package:amazon_mobile/presentation/screens/auth_view/login_view.dart';
 import 'package:flutter/material.dart';

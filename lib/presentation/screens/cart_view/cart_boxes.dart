@@ -116,7 +116,7 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                   dimension: 33,
                   child: Text(
                     quantity.toString(),
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: ColorManager.activeCyanColor,
                     ),
                   ),

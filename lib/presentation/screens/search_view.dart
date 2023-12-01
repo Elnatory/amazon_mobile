@@ -2,7 +2,6 @@ import 'package:amazon_mobile/domain/model/products.dart';
 import 'package:amazon_mobile/presentation/layout/search_layout.dart';
 import 'package:amazon_mobile/presentation/resources/cloud_firestore.dart';
 import 'package:amazon_mobile/presentation/screens/main_view/product_details.dart';
-import 'package:amazon_mobile/presentation/widgets/product_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 

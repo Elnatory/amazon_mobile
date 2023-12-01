@@ -8,7 +8,7 @@ class CustomMainButton extends StatelessWidget {
   final bool isLoading;
   final VoidCallback onPressed;
   final double? width;
-  CustomMainButton({
+  const CustomMainButton({
     Key? key,
     required this.child,
     required this.color,
@@ -28,7 +28,7 @@ class CustomMainButton extends StatelessWidget {
         onPressed: onPressed,
         child: !isLoading
             ? Center(child: child)
-            : CircularProgressIndicator(
+            : const CircularProgressIndicator(
                     color: Colors.white,
                   ),
       ),

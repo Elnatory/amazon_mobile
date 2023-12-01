@@ -4,14 +4,11 @@ import 'package:amazon_mobile/presentation/layout/search_layout.dart';
 import 'package:amazon_mobile/presentation/resources/cloud_firestore.dart';
 import 'package:amazon_mobile/presentation/resources/color_manager.dart';
 import 'package:amazon_mobile/presentation/resources/constants.dart';
-import 'package:amazon_mobile/presentation/resources/utils.dart';
 import 'package:amazon_mobile/presentation/screens/cart_view/cart_boxes.dart';
 import 'package:amazon_mobile/presentation/screens/cart_view/cart_subtotal.dart';
 import 'package:amazon_mobile/presentation/screens/checkout_view/checkout_screen.dart';
 import 'package:amazon_mobile/presentation/widgets/main_button.dart';
 import 'package:amazon_mobile/presentation/widgets/user_details.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -55,7 +52,7 @@ class _CartState extends State<Cart> {
                             (context, AsyncSnapshot<List<Product>> snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
-                            return SizedBox(
+                            return const SizedBox(
                               height: 30,
                               child: CircularProgressIndicator(),
                             );
@@ -140,10 +137,10 @@ class _CartState extends State<Cart> {
                     builder: (context, AsyncSnapshot<List<Product>> snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return CustomMainButton(
-                          child: const Text("Loading"),
                           color: ColorManager.yellowColor,
                           isLoading: true,
                           onPressed: () {},
+                          child: const Text("Loading"),
                         );
                       } else {
                         int totalQuantity = Provider.of<AppProvider>(context)
@@ -189,7 +186,7 @@ class _CartState extends State<Cart> {
                           child: SizedBox(
                             width: 200,
                             child: Text(
-                              "Proceed to Buy (${totalQuantity} item)",
+                              "Proceed to Buy ($totalQuantity item)",
                               style: const TextStyle(
                                   color: Colors.black, fontSize: 18.0),
                             ),

@@ -5,9 +5,6 @@ import 'package:amazon_mobile/presentation/resources/cloud_firestore.dart';
 import 'package:amazon_mobile/presentation/resources/color_manager.dart';
 import 'package:amazon_mobile/presentation/screens/order_view/order_screen.dart';
 import 'package:amazon_mobile/presentation/widgets/main_button.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -69,7 +66,7 @@ class _CheckoutState extends State<Checkout> {
                       });
                     },
                   ),
-                  Icon(Icons.money),
+                  const Icon(Icons.money),
                   const SizedBox(
                     width: 12.0,
                   ),
@@ -166,7 +163,7 @@ class _CheckoutState extends State<Checkout> {
                     print("Navigation Start");
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => OrderScreen()),
+                      MaterialPageRoute(builder: (context) => const OrderScreen()),
                     ).then((result) {
                       print("Navigation Completed with result: $result");
                     }).catchError((error) {

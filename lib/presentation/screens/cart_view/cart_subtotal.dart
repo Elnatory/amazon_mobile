@@ -7,7 +7,7 @@ class Subtotal extends StatelessWidget {
   final List<Product> products;
   final List<int> quantities; // Add list of quantities
 
-  Subtotal({Key? key, required this.products, required this.quantities})
+  const Subtotal({Key? key, required this.products, required this.quantities})
       : super(key: key);
 
   @override
@@ -24,28 +24,28 @@ class Subtotal extends StatelessWidget {
       return sum + productTotal;
     });
 
-    return Container(
+    return SizedBox(
       height: 50,
       child: Row(
         children: [
-          Text(
+          const Text(
             "Subtotal",
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
-          SizedBox(width: 10),
+          const SizedBox(width: 10),
           RichText(
             text: TextSpan(
               style: DefaultTextStyle.of(context).style,
               children: [
                 TextSpan(
                   text: appProvider.totalPrice().toStringAsFixed(2),
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 25,
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                TextSpan(
+                const TextSpan(
                   text: ' EGP',
                   style: TextStyle(
                     fontSize: 13,

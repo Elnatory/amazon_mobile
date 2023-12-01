@@ -10,7 +10,6 @@ import 'package:intl/intl.dart';
 import 'package:amazon_mobile/domain/model/category.dart' show Category;
 import 'package:amazon_mobile/domain/model/products.dart' show Product;
 import 'package:amazon_mobile/domain/model/order.dart' show OrderModel;
-import 'package:provider/provider.dart';
 
 class CloudFirestoreClass {
   FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
@@ -177,7 +176,7 @@ class CloudFirestoreClass {
         .snapshots()
         .map((snapshot) {
       return snapshot.docs
-          .map((doc) => Product.fromJson(doc.data() as Map<String, dynamic>))
+          .map((doc) => Product.fromJson(doc.data()))
           .toList();
     });
   }

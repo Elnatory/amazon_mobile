@@ -4,8 +4,9 @@ import 'package:amazon_mobile/presentation/resources/cloud_firestore.dart';
 import 'package:amazon_mobile/presentation/resources/color_manager.dart';
 import 'package:amazon_mobile/presentation/resources/utils.dart';
 import 'package:amazon_mobile/presentation/widgets/poroduct_info.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_paypal_payment/flutter_paypal_payment.dart';
+// import 'package:flutter_paypal_checkout/flutter_paypal_checkout.dart';
 
 class OrderScreen extends StatefulWidget {
   const OrderScreen({super.key});
@@ -33,7 +34,7 @@ class _OrderScreenState extends State<OrderScreen> {
         future: CloudFirestoreClass().getUserOrders(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           }
@@ -60,10 +61,10 @@ class _OrderScreenState extends State<OrderScreen> {
                 padding: const EdgeInsets.only(bottom: 12.0),
                 child: ExpansionTile(
                   tilePadding: EdgeInsets.zero,
-                  collapsedShape: RoundedRectangleBorder(
+                  collapsedShape: const RoundedRectangleBorder(
                     side: BorderSide(color: Colors.orange, width: 2.3),
                   ),
-                  shape: RoundedRectangleBorder(
+                  shape: const RoundedRectangleBorder(
                     side: BorderSide(color: Colors.orange, width: 2.3),
                   ),
                   title: Row(
@@ -85,16 +86,16 @@ class _OrderScreenState extends State<OrderScreen> {
                           Padding(
                             padding: const EdgeInsets.all(9.0),
                             child: ProductInformationWidget(
-                              productName: orderProducts[0]!.title ?? '',
+                              productName: orderProducts[0].title ?? '',
                               cost: double.parse(order.totalPrice.toString()),
-                              sellerName: orderProducts[0]!.brandName ?? '',
+                              sellerName: orderProducts[0].brandName ?? '',
                             ),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(left: 9.0),
                             child: Text(
                               'Total Price: EGP ${order.totalPrice}',
-                              style: TextStyle(fontSize: 18.0),
+                              style: const TextStyle(fontSize: 18.0),
                             ),
                           ),
                         ],
@@ -169,7 +170,66 @@ class _OrderScreenState extends State<OrderScreen> {
                               ),
                             ),
                         ]
-                      : [],
+                      : [
+                          ElevatedButton(
+                            onPressed: () async {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    PaypalCheckoutView(
+                                  note:
+                                      "Contact us for any questions on your order.",
+                                  onSuccess: (Map params) async {
+                                    print("onSuccess: $params");
+                                    Navigator.pop(context);
+                                  },
+                                  onError: (error) {
+                                    print("onError: $error");
+                                    Navigator.pop(context);
+                                  },
+                                  onCancel: () {
+                                    print('cancelled:');
+                                    Navigator.pop(context);
+                                  },
+                                  sandboxMode: true,
+                                  clientId:
+                                      "AeZfRlbmQtc8Z57hOW7gb-sPUJgnhNfJd3QCnf4OpnZbpAFTCY1ceBnElh_siV0mDNn70pbAKjK2ss1T",
+                                  secretKey:
+                                      "EEWFtW1vuSGxrA1wgTvxTDhFW9B9oN3ZypsAMqB16tIX4wqjnKiDofVwLI6PjU4zuVYIebgjTMEKBeOg",
+                                  transactions: [
+                                    {
+                                      "amount": {
+                                        "total": order.totalPrice.toString(),
+                                        "currency": "USD",
+                                        "details": {
+                                          "subtotal":
+                                              order.totalPrice.toString(),
+                                          "shipping": '0',
+                                          "shipping_discount": "0"
+                                        }
+                                      },
+                                      "description":
+                                          "Payment for order ${order.id}",
+                                      "item_list": {
+                                        "items": order.products
+                                            .map(
+                                              (product) => {
+                                                "name": product.title,
+                                                "quantity": product.qty,
+                                                "price":
+                                                    product.price.toString(),
+                                                "currency": "USD"
+                                              },
+                                            )
+                                            .toList(),
+                                      },
+                                    }
+                                  ],
+                                ),
+                              ));
+                            },
+                            child: Text('Pay with PayPal'),
+                          ),
+                        ],
                 ),
               );
             },

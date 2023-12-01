@@ -1,12 +1,10 @@
 import 'package:amazon_mobile/data/provider/app_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:amazon_mobile/domain/model/products.dart';
-import 'package:amazon_mobile/presentation/resources/cloud_firestore.dart';
 import 'package:amazon_mobile/presentation/resources/color_manager.dart';
 import 'package:amazon_mobile/presentation/resources/utils.dart';
 import 'package:amazon_mobile/presentation/widgets/poroduct_info.dart';
 import 'package:amazon_mobile/presentation/widgets/rounded_button.dart';
-import 'package:amazon_mobile/presentation/widgets/square_button.dart';
 import 'package:provider/provider.dart';
 
 class FavItemWidget extends StatefulWidget {
