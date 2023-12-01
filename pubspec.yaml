@@ -47,7 +47,6 @@ dependencies:
   intl: ^0.18.1
   provider: ^6.1.1
   firebase_messaging: ^14.7.6
-  flutter_stripe: ^9.5.0+1
 
 dev_dependencies:
   flutter_test:
