@@ -482,4 +482,27 @@ class CloudFirestoreClass {
           .update({'notificationToken': token});
     }
   }
+
+////////////////////////////////////////////////////////////////////////////////
+  Future<List<Product>> getProductsForCategoryId(String categoryId,) async {
+    try {
+      QuerySnapshot<Map<String, dynamic>> productsSnapshot =
+          await firebaseFirestore
+              .collection("products")
+              .where("category._id", isEqualTo: categoryId)
+              .get();
+
+      List<Product> productsList = productsSnapshot.docs
+          .map((doc) => Product.fromMap(doc.data()))
+          .toList();
+
+      return productsList;
+    } catch (e) {
+      print("Error fetching products for category ID: $e");
+      return [];
+    }
+  }
+
+
+  
 }

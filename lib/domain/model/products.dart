@@ -21,6 +21,11 @@ class Product {
   final String? brandName;
   final String? brandSlug;
 
+  final String? catId;
+  final String? catImage;
+  final String? catName;
+  final String? catSlug;
+
   Product({
     required this.createdAt,
     required this.description,
@@ -40,6 +45,10 @@ class Product {
     required this.brandImage,
     required this.brandName,
     required this.brandSlug,
+    required this.catId,
+    required this.catImage,
+    required this.catName,
+    required this.catSlug,
     required this.qty,
     required this.isFavourite,
   });
@@ -64,6 +73,10 @@ class Product {
       brandImage: json['brand']?['image'] as String?,
       brandName: json['brand']?['name'] as String?,
       brandSlug: json['brand']?['slug'] as String?,
+      catId: json['category']?['_id'] as String?,
+      catImage: json['category']?['image'] as String?,
+      catName: json['category']?['name'] as String?,
+      catSlug: json['category']?['slug'] as String?,
       qty: json['qty'],
       isFavourite: json['isFavourite'],
     );
@@ -117,6 +130,12 @@ class Product {
         'name': brandName,
         'slug': brandSlug,
       },
+      'category': {
+        '_id': catId,
+        'image': catImage,
+        'name': catName,
+        'slug': catSlug,
+      },
       'qty': qty,
       'isFavourite': isFavourite,
     };
@@ -145,7 +164,43 @@ class Product {
         brandImage: brandImage ,
         brandName: brandName ,
         brandSlug: brandSlug,
+        catId: catId ,
+        catImage: catImage ,
+        catName: catName ,
+        catSlug: catSlug,
         qty: qty ?? this.qty,
         isFavourite: isFavourite,
       );
+
+
+
+
+      factory Product.fromMap(Map<String, dynamic> map) {
+    return Product(
+      createdAt: map['createdAt'],
+      description: map['description'],
+      id: map['id'],
+      imageCover: map['imageCover'],
+      images: (map['images'] as List<dynamic>?)?.cast<String>(),
+      price: map['price'],
+      priceAfterDiscount: map['priceAfterDiscount'],
+      quantity: map['quantity'],
+      ratingsAverage: map['ratingsAverage'],
+      ratingsQuantity: map['ratingsQuantity'],
+      slug: map['slug'],
+      sold: map['sold'],
+      title: map['title'],
+      updatedAt: map['updatedAt'],
+      brandId: map['brandId'],
+      brandImage: map['brandImage'],
+      brandName: map['brandName'],
+      brandSlug: map['brandSlug'],
+      catId: map['catId'],
+      catImage: map['catImage'],
+      catName: map['catName'],
+      catSlug: map['catSlug'],
+      qty: map['qty'],
+      isFavourite: map['isFavourite'],
+    );
+  }
 }

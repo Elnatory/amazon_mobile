@@ -286,7 +286,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                       return Transform.translate(
                         offset: const Offset(0, -40),
                         child: ProductsShowcaseListView(
-                          title: 'Shop by Products',
+                          title: 'Related Products',
                           products: products,
                         ),
                       );

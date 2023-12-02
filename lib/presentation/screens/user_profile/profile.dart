@@ -38,16 +38,12 @@ Future<void> _logout() async {
   }
 
   void fetchUserData() async {
-    try {
-      Map<String, dynamic> userData = await firestoreClass.getNameAndEmail();
-      setState(() {
-        userName = userData['name'] ?? 'No Name';
-        userEmail = userData['email'] ?? 'No Email';
-        createdAt = userData['createdAt'] ?? 'No Creation Date';
-      });
-    } catch (e) {
-      print('Error fetching user data: $e');
-    }
+    Map<String, dynamic> userData = await firestoreClass.getNameAndEmail();
+    setState(() {
+      userName = userData['displayName'] ?? 'No Name';
+      userEmail = userData['email'] ?? 'No Email';
+      createdAt = userData['createdAt'] ?? 'No Creation Date';
+    });
   }
 
   Widget build(BuildContext context) {
