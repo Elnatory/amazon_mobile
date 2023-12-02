@@ -2,6 +2,7 @@ import 'package:amazon_mobile/presentation/screens/account_view/account.dart';
 import 'package:amazon_mobile/presentation/screens/cart_view/cart.dart';
 import 'package:amazon_mobile/presentation/screens/main_view/home_screen.dart';
 import 'package:amazon_mobile/presentation/screens/more_view/more.dart';
+import 'package:amazon_mobile/presentation/screens/user_profile/profile.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -16,7 +17,7 @@ const String amazonLogo =
 
 final List<Widget> screens = [
   const Home(),
-  const Account(),
+  const ProfileScreen(),
   const Cart(),
   const More(),
 ];

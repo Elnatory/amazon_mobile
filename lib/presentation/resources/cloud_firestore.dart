@@ -43,8 +43,9 @@ class CloudFirestoreClass {
       if (userDoc.exists) {
         Map<String, dynamic> userData = userDoc.data()!;
         return {
-          "name": userData['name'],
+          "name": userData['displayName'],
           "email": userData['email'],
+          "createdAt":userData['createdAt'],
         };
       } else {
         return {

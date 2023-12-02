@@ -1,6 +1,5 @@
 import 'package:amazon_mobile/presentation/resources/cloud_firestore.dart';
 import 'package:amazon_mobile/presentation/widgets/main_button.dart';
-import 'package:amazon_mobile/presentation/widgets/text_field_widget.dart';
 import 'package:amazon_mobile/presentation/resources/color_manager.dart';
 import 'package:amazon_mobile/presentation/resources/constants.dart';
 import 'package:amazon_mobile/presentation/resources/utils.dart';
@@ -11,26 +10,26 @@ import 'package:get/route_manager.dart';
 import 'package:get/get.dart';
 
 class Registeration extends StatefulWidget {
-  const Registeration({super.key});
-
+  const Registeration({Key? key}) : super(key: key);
 
   @override
-  State<Registeration> createState() => _RegisterationState();
+  State<Registeration> createState() => _RegistrationState();
 }
 
-class _RegisterationState extends State<Registeration> {
+class _RegistrationState extends State<Registeration> {
   CloudFirestoreClass cloudFirestoreClass = CloudFirestoreClass();
   var auth = FirebaseAuth.instance;
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  var Muhammad_Omar = GlobalKey<FormState>();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
   bool isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     Size screenSize = Utils().getScreenSize();
     return Scaffold(
-      key: Muhammad_Omar,
       backgroundColor: ColorManager.text,
       body: SingleChildScrollView(
         child: SizedBox(
@@ -57,94 +56,141 @@ class _RegisterationState extends State<Registeration> {
                         width: 1,
                       ),
                     ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          "Sign-Up",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500, fontSize: 33),
-                        ),
-                        TextFieldWidget(
-                          title: "Name",
-                          controller: nameController,
-                          obscureText: false,
-                          hintText: "Enter your name",
-                        ),
-                        TextFieldWidget(
-                          title: "Email",
-                          controller: emailController,
-                          obscureText: false,
-                          hintText: "Enter your email",
-                        ),
-                        TextFieldWidget(
-                          title: "Password",
-                          controller: passwordController,
-                          obscureText: true,
-                          hintText: "Enter your password",
-                        ),
-                        Align(
-                          alignment: Alignment.center,
-                          child: CustomMainButton(
-                              color: ColorManager.yellowColor,
-                              isLoading: isLoading,
-                              onPressed: () async {
-                                try {
-                                  var user =
-                                      await auth.createUserWithEmailAndPassword(
-                                          email: emailController.text,
-                                          password: passwordController.text);
-                                  print("reg success");
-                                  await CloudFirestoreClass()
-                                      .uploadNameAndEmailToDatabase(
-                                    name: nameController.text,
-                                    email: emailController.text,
-                                  );
-                                  Navigator.pushReplacement(context,
-                                      MaterialPageRoute(builder: (context) {
-                                    return const Login();
-                                  }));
-                                  // Get.to(Login());
-                                  Get.snackbar(
-                                    'You have registered',
-                                    'Successfully',
-                                    titleText: const Text(
-                                      'You have registered',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    messageText: const Text(
-                                      'You have registered',
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                  );
-                                } on FirebaseAuthException catch (e) {
-                                  if (e.code == 'weak-password') {
-                                    print('The password provided is too weak.');
-                                  } else if (e.code == 'email-already-in-use') {
-                                    print(
-                                        'The account already exists for that email.');
-                                  }
-                                } catch (e) {
-                                  print(e);
-                                }
-                              },
+                    child: Form(
+                      key: formKey,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "Sign-Up",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 33,
+                            ),
+                          ),
+                          TextFormField(
+                            controller: nameController,
+                            obscureText: false,
+                            decoration: InputDecoration(
+                              labelText: "Name",
+                              hintText: "Enter your name",
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter a username';
+                              }
+                              return null;
+                            },
+                          ),
+                          TextFormField(
+                            controller: emailController,
+                            obscureText: false,
+                            decoration: InputDecoration(
+                              labelText: "Email",
+                              hintText: "Enter your email",
+                            ),
+                            validator: (value) {
+                              bool emailValid = RegExp(
+                                r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+                              ).hasMatch(value ?? '');
+
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter an email';
+                              } else if (!emailValid) {
+                                return "Enter a valid email";
+                              }
+                              return null;
+                            },
+                          ),
+                          TextFormField(
+                            controller: passwordController,
+                            obscureText: true,
+                            decoration: InputDecoration(
+                              labelText: "Password",
+                              hintText: "Enter your password",
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter a password';
+                              } else if (value.length < 6) {
+                                return 'Please enter at least 6 characters';
+                              }
+                              return null;
+                            },
+                          ),
+                          Align(
+                            alignment: Alignment.center,
+                            child: CustomMainButton(
                               child: const Text(
                                 "Sign Up",
                                 style: TextStyle(
-                                    letterSpacing: 0.6,
-                                    color: ColorManager.primary),
-                              )),
-                        )
-                      ],
+                                  letterSpacing: 0.6,
+                                  color: ColorManager.primary,
+                                ),
+                              ),
+                              color: ColorManager.yellowColor,
+                              isLoading: isLoading,
+                              onPressed: () async {
+                                if (formKey.currentState!.validate()) {
+                                  try {
+                                    var user = await auth
+                                        .createUserWithEmailAndPassword(
+                                      email: emailController.text,
+                                      password: passwordController.text,
+                                    );
+                                    print("Registration success");
+                                    await CloudFirestoreClass()
+                                        .uploadNameAndEmailToDatabase(
+                                      name: nameController.text,
+                                      email: emailController.text,
+                                    );
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => const Login(),
+                                      ),
+                                    );
+                                    Get.snackbar(
+                                      'You have registered',
+                                      'Successfully',
+                                      titleText: const Text(
+                                        'You have registered',
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      messageText: const Text(
+                                        'You have registered',
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    );
+                                  } on FirebaseAuthException catch (e) {
+                                    if (e.code == 'weak-password') {
+                                      print(
+                                        'The password provided is too weak.',
+                                      );
+                                    } else if (e.code ==
+                                        'email-already-in-use') {
+                                      print(
+                                        'The account already exists for that email.',
+                                      );
+                                    }
+                                  } catch (e) {
+                                    print(e);
+                                  }
+                                } else {}
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   Row(
@@ -158,7 +204,7 @@ class _RegisterationState extends State<Registeration> {
                       const Padding(
                         padding: EdgeInsets.symmetric(horizontal: 10),
                         child: Text(
-                          "already in amazon?",
+                          "Already in Amazon?",
                           style: TextStyle(color: Colors.grey),
                         ),
                       ),
@@ -171,21 +217,24 @@ class _RegisterationState extends State<Registeration> {
                     ],
                   ),
                   CustomMainButton(
-                      color: Colors.grey[400]!,
-                      isLoading: false,
-                      onPressed: () {
-                        Navigator.pushReplacement(context,
-                            MaterialPageRoute(builder: (context) {
-                          return const Login();
-                        }));
-                      },
-                      child: const Text(
-                        "Back",
-                        style: TextStyle(
-                          letterSpacing: 0.6,
-                          color: Colors.black,
+                    child: const Text(
+                      "Back",
+                      style: TextStyle(
+                        letterSpacing: 0.6,
+                        color: Colors.black,
+                      ),
+                    ),
+                    color: Colors.grey[400]!,
+                    isLoading: false,
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const Login(),
                         ),
-                      ))
+                      );
+                    },
+                  ),
                 ],
               ),
             ),
