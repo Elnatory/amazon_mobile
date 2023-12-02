@@ -40,7 +40,7 @@ Future<void> _logout() async {
   void fetchUserData() async {
     Map<String, dynamic> userData = await firestoreClass.getNameAndEmail();
     setState(() {
-      userName = userData['displayName'] ?? 'No Name';
+      userName = userData['name'] ?? 'No Name';
       userEmail = userData['email'] ?? 'No Email';
       createdAt = userData['createdAt'] ?? 'No Creation Date';
     });
