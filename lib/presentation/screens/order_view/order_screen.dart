@@ -6,6 +6,7 @@ import 'package:amazon_mobile/presentation/resources/utils.dart';
 import 'package:amazon_mobile/presentation/widgets/poroduct_info.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_paypal_payment/flutter_paypal_payment.dart';
 
 class OrderScreen extends StatefulWidget {
   const OrderScreen({super.key});
@@ -204,7 +205,70 @@ class _OrderScreenState extends State<OrderScreen> {
                                     ),
                                   ),
                               ]
-                            : [],
+                            : [
+                                ElevatedButton(
+                                  onPressed: () async {
+                                    try {
+                                      await Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            PaypalCheckoutView(
+                                          note:
+                                              "Contact us for any questions on your order.",
+                                          onSuccess: (Map params) async {
+                                            print("onSuccess: $params");
+                                            Navigator.pop(context);
+                                          },
+                                          onError: (error) {
+                                            print("onError: $error");
+                                            Navigator.pop(context);
+                                          },
+                                          onCancel: () {
+                                            print('cancelled:');
+                                            Navigator.pop(context);
+                                          },
+                                          sandboxMode: true,
+                                          clientId:
+                                              "AeZfRlbmQtc8Z57hOW7gb-sPUJgnhNfJd3QCnf4OpnZbpAFTCY1ceBnElh_siV0mDNn70pbAKjK2ss1T",
+                                          secretKey:
+                                              "EEWFtW1vuSGxrA1wgTvxTDhFW9B9oN3ZypsAMqB16tIX4wqjnKiDofVwLI6PjU4zuVYIebgjTMEKBeOg",
+                                          transactions: [
+                                            {
+                                              "amount": {
+                                                "total": 'order.totalPrice',
+                                                "currency": "USD",
+                                                "details": {
+                                                  "subtotal":
+                                                      'order.totalPrice',
+                                                  "shipping": '0',
+                                                  "shipping_discount": "0"
+                                                }
+                                              },
+                                              "description":
+                                                  "Payment for order ${order.id}",
+                                              "item_list": {
+                                                "items": order.products
+                                                    .map(
+                                                      (product) => {
+                                                        "name": product.title,
+                                                        "quantity": product.qty,
+                                                        "price": product.price,
+                                                        "currency": "USD"
+                                                      },
+                                                    )
+                                                    .toList(),
+                                              },
+                                            }
+                                          ],
+                                        ),
+                                      ));
+                                    } catch (e) {
+                                      print("Error: $e");
+                                    }
+                                  },
+                                  child: Text('Pay with PayPal'),
+                                ),
+                              ],
                       ),
                     );
                   },
