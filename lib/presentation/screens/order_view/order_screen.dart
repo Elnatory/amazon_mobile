@@ -1,4 +1,5 @@
 import 'package:amazon_mobile/domain/model/order.dart';
+import 'package:amazon_mobile/domain/model/products.dart';
 import 'package:amazon_mobile/presentation/layout/search_layout2.dart';
 import 'package:amazon_mobile/presentation/resources/cloud_firestore.dart';
 import 'package:amazon_mobile/presentation/resources/color_manager.dart';
